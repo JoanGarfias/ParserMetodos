@@ -41,18 +41,31 @@
    enum yytokentype {
      NUMERO = 258,
      X = 259,
-     SIN = 260,
-     COS = 261,
-     TAN = 262,
-     LOG10 = 263,
-     LOGE = 264,
-     RAIZ = 265,
-     NT_DEC = 266,
-     PF_DEC = 267,
-     FX_DEC = 268,
-     FDX_DEC = 269,
-     ERROR_DEC = 270,
-     GX_DEC = 271
+     EULER = 260,
+     PI = 261,
+     SIN = 262,
+     COS = 263,
+     TAN = 264,
+     SEC = 265,
+     COSEC = 266,
+     COT = 267,
+     ASIN = 268,
+     ACOS = 269,
+     ATAN = 270,
+     SINH = 271,
+     COSH = 272,
+     TANH = 273,
+     LOG10 = 274,
+     LOGE = 275,
+     EXP = 276,
+     RAIZ = 277,
+     NT_DEC = 278,
+     PF_DEC = 279,
+     X_DEC = 280,
+     FX_DEC = 281,
+     FDX_DEC = 282,
+     GX_DEC = 283,
+     ERROR_DEC = 284
    };
 #endif
 
@@ -63,14 +76,14 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 25 "parsermet.y"
+#line 36 "parsermet.y"
 
     double val;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 74 "parsermet_yac.h"
+#line 87 "parsermet_yac.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

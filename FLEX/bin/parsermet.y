@@ -5,12 +5,23 @@
 #include <string.h>
 #include "parsermet.h"
 
+#define EVALUAR_FUNCION 997
 #define METODO_NEWTONRAPH 998
 #define METODO_PUNTOFIJO 999
+#define EPSILON 1e-9
 
-void yyerror(const char *s);
-void yywarning(const char *msg);
-void asignarValores(double x, double vf1, double vf2, double err);
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
+#ifndef M_E
+    #define M_E 2.71828182845904523536
+#endif
+
+void yyerror(const char *);
+void yywarning(const char *);
+void asignarValores(double, double, double, double);
+void validar_denominador(double);
 
 double x = 10.0, x_ant = 0.0;
 double error_esperado = 0.1;
@@ -26,11 +37,13 @@ double fx = 0.0, fdx = 0.0, gx = 0.0;
     double val;
 }
 
-%type <val> expr term factor
+%type <val> expr term factor sig
 %token <val> NUMERO
-%token X
-%token SIN COS TAN LOG10 LOGE RAIZ
-%token NT_DEC PF_DEC FX_DEC FDX_DEC ERROR_DEC GX_DEC
+%token X EULER PI
+%token SIN COS TAN SEC COSEC COT ASIN ACOS ATAN SINH COSH TANH
+%token LOG10 LOGE EXP RAIZ
+
+%token NT_DEC PF_DEC X_DEC FX_DEC FDX_DEC GX_DEC ERROR_DEC
 
 %left '+' '-'
 %left '*' '/'
@@ -52,6 +65,14 @@ prog:
         metodo_sel = METODO_PUNTOFIJO;
         asignarValores($2, $4, $6, $8);
     }
+
+    |
+    X_DEC NUMERO FX_DEC expr '}'
+    {
+        metodo_sel = EVALUAR_FUNCION;
+        asignarValores($2, $4, 0.0, 0.0);
+    }
+
     ;
 
 expr:
@@ -67,11 +88,8 @@ term:
 
     | term '/' factor       {
                                 if(set_x){
-                                    if ($3 == 0) {
-                                        yyerror("División por cero no permitida.");
-                                    } else {
-                                        $$ = $1 / $3;
-                                    }
+                                    validar_denominador($3);
+                                    $$ = $1 / $3;
                                 }
                             }
 
@@ -81,26 +99,86 @@ term:
     ;
 
 factor:
-    NUMERO                  {   if(set_x) $$ = $1;          }
+    sig NUMERO                  {   if(set_x) $$ = $1 * $2;          }
 
-    | X                     {   if(set_x) $$ = x;           }
+    | sig X                     {   if(set_x) $$ = $1 * x;           }
     
-    | '(' expr ')'          {   if(set_x) $$ = $2;          }
+    | sig EULER                 {   if(set_x) $$ = $1 * M_E;         }
+
+    | sig PI                    {   if(set_x) $$ = $1 * M_PI;        }
     
-    | SIN '(' expr ')'      {   if(set_x) $$ = sin($3);     }
+    | sig '(' expr ')'          {   if(set_x) $$ = $1 * $3;          }
+
+    | sig SIN '(' expr ')'      {   if(set_x) $$ = $1 * sin($4);     }
     
-    | COS '(' expr ')'      {   if(set_x) $$ = cos($3);     }
+    | sig COS '(' expr ')'      {   if(set_x) $$ = $1 * cos($4);     }
     
-    | TAN '(' expr ')'      {   if(set_x) $$ = tan($3);     }
+    | sig TAN '(' expr ')'      {   if(set_x) $$ = $1 * tan($4);     }
     
-    | LOG10 '(' expr ')'    {   if(set_x) $$ = log10($3);   }
+    | sig COSEC '(' expr ')'    {   if(set_x){
+                                        validar_denominador(sin($4));
+                                        $$ = $1 * (1.0 / sin($4));
+                                    }     
+                                }
     
-    | LOGE '(' expr ')'     {   if(set_x) $$ = log($3);     }
+    | sig SEC '(' expr ')'      {   if(set_x){
+                                        validar_denominador(cos($4));
+                                        $$ = $1 * (1.0 / cos($4));
+                                    }     
+                                }
     
-    | RAIZ '(' expr ')'     {   if(set_x) $$ = sqrt($3);    }
+    | sig COT '(' expr ')'      {   if(set_x){
+                                        validar_denominador(tan($4));
+                                        $$ = $1 * (1.0 / tan($4));
+                                    }     
+                                }
+    
+    | sig ASIN '(' expr ')'     {   if(set_x) $$ = $1 * asin($4);    }
+
+    | sig ACOS '(' expr ')'     {   if(set_x) $$ = $1 * acos($4);    }
+    
+    | sig ATAN '(' expr ')'     {   if(set_x) $$ = $1 * atan($4);    }
+
+    | sig SINH '(' expr ')'     {   if(set_x) $$ = $1 * sinh($4); }
+    
+    | sig COSH '(' expr ')'     {   if(set_x) $$ = $1 * cosh($4); }
+    
+    | sig TANH '(' expr ')'     {   if(set_x) $$ = $1 * tanh($4); }
+
+    | sig LOGE '(' expr ')'     {   if(set_x){
+                                        if($4 <= 0) yyerror("Error: logaritmo natural de un número negativo o cero");
+                                        else $$ = $1 * log($4);
+                                    }
+                                }
+
+    | sig LOG10 '(' expr ')'    {   if(set_x){
+                                        if($4 <= 0) yyerror("Error: logaritmo base 10 de un número negativo o cero");
+                                        else $$ = $1 * log10($4);
+                                    }
+                                }
+
+    | sig EXP '(' expr ')'      {   if(set_x) $$ = $1 * exp($4);     }
+    
+    | sig RAIZ '(' expr ')'     {   if(set_x){
+                                        if($4 < 0.0) yyerror("Raiz negativa");
+                                        else $$ = $1 * sqrt($4);
+                                    }    
+                                }
     ;
 
+sig:
+    '+'             { $$ = 1.0;     }
+    | '-'           { $$ = -1.0;    }
+    | /*Sin signo*/ { $$ = 1.0;     }
+;
+
 %%
+
+void validar_denominador(double b){
+    if(fabs(b) < EPSILON)
+        yyerror("Division por cero");
+    return;
+}
 
 void asignarValores(double x_metodo, double valor_f1, double valor_f2, double error_metodo){
     if(!set_x){
@@ -110,7 +188,7 @@ void asignarValores(double x_metodo, double valor_f1, double valor_f2, double er
         return;
     }
 
-    if(metodo_sel == METODO_NEWTONRAPH){
+    if(metodo_sel == METODO_NEWTONRAPH ||  metodo_sel == EVALUAR_FUNCION){
         fx = valor_f1;
         fdx = valor_f2;
     }
@@ -131,31 +209,43 @@ int main() {
     yyparse();
     fclose(yyin);
     fclose(yyout);
+    if(metodo_sel != EVALUAR_FUNCION){
+        while (error > error_esperado) {
+                i++;
+                yyin = fopen("entrada.txt", "r");
+                yyparse();
+                fclose(yyin);
 
-    while (error > error_esperado) {
-            i++;
-            yyin = fopen("entrada.txt", "r");
-            yyparse();
-            fclose(yyin);
+                if(metodo_sel == METODO_NEWTONRAPH){
+                    validar_denominador(fdx);
+                    x_nuevo = x - (fx / fdx);
+                }
+                else{
+                    x_nuevo = gx;
+                }
 
-            if(metodo_sel == METODO_NEWTONRAPH)
-                x_nuevo = x - (fx / fdx);
-            else
-                x_nuevo = gx;
+                error = fabs(x_nuevo - x);
+                x = x_nuevo;
 
-            error = fabs(x_nuevo - x);
-            x = x_nuevo;
-
-            printf("Iteracion %d:\n", i);
-            printf("  x = %lf\n", x);
-            printf("  Error = %lf\n", error);
-            printf("  f(x) = %lf\n", fx);
-            if(metodo_sel == METODO_NEWTONRAPH)
-                printf("  f'(x) = %lf\n", fdx);
-            else
-                printf("  g(x) = %lf\n", gx);
+                printf("Iteracion %d:\n", i);
+                printf("  x = %lf\n", x);
+                printf("  Error = %lf\n", error);
+                printf("  f(x) = %lf\n", fx);
+                if(metodo_sel == METODO_NEWTONRAPH)
+                    printf("  f'(x) = %lf\n", fdx);
+                else
+                    printf("  g(x) = %lf\n", gx);
+        }
     }
-
+    else{
+        yyin = fopen("entrada.txt", "r");
+        yyout = fopen("salida.txt", "w");
+        yyparse();
+        fclose(yyin);
+        fclose(yyout);
+        printf("  x = %lf\n", x);
+        printf("  f(x) = %lf\n", fx);
+    }
 
     x = 10.0, x_ant = 0.0;
     metodo_sel = 0, set_x = 0, i = 0;
