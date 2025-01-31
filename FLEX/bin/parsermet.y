@@ -18,6 +18,7 @@
     #define M_E 2.71828182845904523536
 #endif
 
+void parser();
 void yyerror(const char *);
 void yywarning(const char *);
 void asignarValores(double, double, double, double);
@@ -53,7 +54,21 @@ double fx = 0.0, fdx = 0.0, gx = 0.0;
 
 %%
 
-prog:    
+prog:  
+    /*
+    P -> nt{
+        x = NUMERO
+        f(x) = expr
+        fd(x) = expr
+        error = NUMERO
+        }
+    P -> pf{
+        x = NUMERO
+        f(x) = expr
+        g(x) = expr
+        error = NUMERO
+    }
+    */
     NT_DEC NUMERO FX_DEC expr FDX_DEC expr ERROR_DEC NUMERO '}'
     {
         metodo_sel = METODO_NEWTONRAPH;
@@ -199,16 +214,19 @@ void asignarValores(double x_metodo, double valor_f1, double valor_f2, double er
     else{ yyerror("Metodo no reconocido");}
 }
 
-int main() {
+void parser() {
     int i = 0;
     double error = 10.0;
     double x_nuevo;
 
+    FILE *res = fopen("resultados.txt", "w");
+    fclose(res);
     yyin = fopen("entrada.txt", "r");
     yyout = fopen("salida.txt", "w");
     yyparse();
     fclose(yyin);
     fclose(yyout);
+
     if(metodo_sel != EVALUAR_FUNCION){
         while (error > error_esperado) {
                 i++;
@@ -227,30 +245,36 @@ int main() {
                 error = fabs(x_nuevo - x);
                 x = x_nuevo;
 
-                printf("Iteracion %d:\n", i);
-                printf("  x = %lf\n", x);
-                printf("  Error = %lf\n", error);
-                printf("  f(x) = %lf\n", fx);
+                FILE *res = fopen("resultados.txt", "a+");
+
+                fprintf(res, "%d %f %f ", i, x, fx);
                 if(metodo_sel == METODO_NEWTONRAPH)
-                    printf("  f'(x) = %lf\n", fdx);
+                    fprintf(res, "%f ", fdx);
                 else
-                    printf("  g(x) = %lf\n", gx);
+                    fprintf(res, "%f ", gx);
+                fprintf(res, "%f\n", error);
+
+                fclose(res);
         }
     }
     else{
+        FILE *res = fopen("resultados.txt", "w");
         yyin = fopen("entrada.txt", "r");
         yyout = fopen("salida.txt", "w");
         yyparse();
+        fprintf(res, "%f %f", x, fx);
         fclose(yyin);
         fclose(yyout);
-        printf("  x = %lf\n", x);
-        printf("  f(x) = %lf\n", fx);
+        fclose(res);
     }
 
     x = 10.0, x_ant = 0.0;
     metodo_sel = 0, set_x = 0, i = 0;
     fx = 0.0, fdx = 0.0, gx = 0.0, error_esperado = 0.2;
+}
 
+int main(){
+    parser();
     return 0;
 }
 
