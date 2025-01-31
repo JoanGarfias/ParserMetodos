@@ -1,0 +1,22 @@
+flex.exe –oparsermet.h parsermet.l
+bison.exe -d –oparsermet_yac.c parsermet.y
+
+{x=1 f(x)=x^2-2 fd(x)=2*x error=0.01}
+
+
+
+bison.exe –oexamen_yac.h examen.y
+
+bison.exe -y -v --defines=binoYac.h -obinomios_yac.h binomios_yac.y
+
+
+
+Este comando te crea un .c y .h del archivo .y
+bison.exe -d –obinomios_suma_yac.c binomios_suma_yac.y
+
+
+Este comando te crea solamente un .h del archivo .y
+bison.exe –obinomios_yac.h binomios_yac.y
+
+
+{x=1 f(x)=x^2-2 fd(x)=2*x error=0.01}
