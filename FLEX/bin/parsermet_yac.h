@@ -2026,57 +2026,78 @@ void parser() {
     fclose(yyin);
     fclose(yyout);
 
-    if(metodo_sel != EVALUAR_FUNCION){
+    if (metodo_sel != EVALUAR_FUNCION) {
+        FILE *res = fopen("resultados.txt", "a+");
+        fprintf(res, "%-10s %-12s %-12s", "Iteración", "X", "f(X)");
+        if (metodo_sel == METODO_NEWTONRAPH)
+            fprintf(res, " %-12s", "f'(X)");
+        else
+            fprintf(res, " %-12s", "g(X)");
+        fprintf(res, " %-12s\n", "Error");
+
+        // Separador visual
+        fprintf(res, "---------- ------------ ------------");
+        if (metodo_sel == METODO_NEWTONRAPH)
+            fprintf(res, " ------------");
+        else
+            fprintf(res, " ------------");
+        fprintf(res, " ------------\n");
+
+        // Cerrar el archivo temporalmente
+        fclose(res);
+
+        // Iterar hasta que el error sea menor que el error esperado
         while (error > error_esperado) {
-                i++;
-                yyin = fopen("entrada.txt", "r");
-                yyparse();
-                fclose(yyin);
+            i++;
 
-                if(metodo_sel == METODO_NEWTONRAPH){
-                    validar_denominador(fdx);
-                    x_nuevo = x - (fx / fdx);
-                }
-                else{
-                    x_nuevo = gx;
-                }
+            yyin = fopen("entrada.txt", "r");
+            yyparse();
+            fclose(yyin);
 
-                error = fabs(x_nuevo - x);
-                x = x_nuevo;
+            if (metodo_sel == METODO_NEWTONRAPH) {
+                validar_denominador(fdx);
+                x_nuevo = x - (fx / fdx);
+            } else {
+                x_nuevo = gx;
+            }
 
-                FILE *res = fopen("resultados.txt", "a+");
+            error = fabs(x_nuevo - x);
+            x = x_nuevo;
 
-                fprintf(res, "%d %f %f ", i, x, fx);
-                if(metodo_sel == METODO_NEWTONRAPH)
-                    fprintf(res, "%f ", fdx);
-                else
-                    fprintf(res, "%f ", gx);
-                fprintf(res, "%f\n", error);
+            res = fopen("resultados.txt", "a");
 
-                fclose(res);
+            // Escribir los resultados en formato tabular
+            fprintf(res, "%-10d %-12.6f %-12.6f", i, x, fx);
+            if (metodo_sel == METODO_NEWTONRAPH)
+                fprintf(res, " %-12.6f", fdx);
+            else
+                fprintf(res, " %-12.6f", gx);
+            fprintf(res, " %-12.6f\n", error);
+
+            fclose(res);
         }
-    }
-    else{
+    } else {
         FILE *res = fopen("resultados.txt", "w");
         yyin = fopen("entrada.txt", "r");
         yyout = fopen("salida.txt", "w");
         yyparse();
-        fprintf(res, "%f %f", x, fx);
+
+        fprintf(res, "f(%.6f) = %.6f\n", x, fx);
+
         fclose(yyin);
         fclose(yyout);
         fclose(res);
     }
 
-    x = 10.0, x_ant = 0.0;
+    x = 10.0, x_ant = 0.0, linea_actual = 1;
     metodo_sel = 0, set_x = 0, i = 0;
     fx = 0.0, fdx = 0.0, gx = 0.0, error_esperado = 0.2;
 }
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
-    exit(EXIT_FAILURE);
+    fprintf(stderr, "Error (Línea %d): %s\n", linea_actual, s);
 }
 
 void yywarning(const char *msg) {
-    fprintf(stderr, "Advertencia: %s\n", msg);
+    fprintf(stderr, "Advertencia (Línea %d): %s\n", linea_actual, msg);
 }

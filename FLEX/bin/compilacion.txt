@@ -1,6 +1,8 @@
 flex.exe –oparsermet.h parsermet.l
 bison.exe -d –oparsermet_yac.c parsermet.y
 
+bison.exe -y -v --defines=parsermetTok.h -oparsermet_yac.h parsermet.y
+
 {x=1 f(x)=x^2-2 fd(x)=2*x error=0.01}
 
 

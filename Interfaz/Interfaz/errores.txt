@@ -1,0 +1,3 @@
+Error (Línea 1): syntax error
+Error (Línea 1): syntax error
+Error (Línea 1): syntax error

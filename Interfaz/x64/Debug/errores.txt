@@ -1,0 +1,6 @@
+Error (Linea 1): Token 'r' no válido
+Error (Linea 1): Token 'a' no válido
+Error (Linea 1): Token 'i' no válido
+Error (Linea 1): Token 'r' no válido
+Error (Linea 1): Token 'a' no válido
+Error (Linea 1): Token 'i' no válido

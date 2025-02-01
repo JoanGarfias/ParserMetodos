@@ -252,10 +252,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    static HWND hWndEdit;	//Manejador de ventana
-    static HWND hStatus;	//Manejador de la barra de estado
-    DWORD dwEVM;	//Evento de captura
-    HFONT hFont;	//Manejador de fuente
+    static HWND hWndEdit;
+    static HWND hWndResultados;
+    static HWND hStatus;
+    DWORD dwEVM;
+    HFONT hFont;
+    HFONT hFontR;
 
     TCHAR* ptchBuffer = NULL;
     static FILE* entrada;
@@ -271,6 +273,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //Area de edicion
         hWndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, RICHEDIT_CLASS, L"", WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL, 0, 0, 0, 0, hWnd, (HMENU)ID_EDITRICH, hInst, NULL);
 
+        //Area de resultados
+        hWndResultados = CreateWindowEx(
+            WS_EX_CLIENTEDGE,       // Estilo extendido
+            RICHEDIT_CLASS,         // Clase del control (RichEdit)
+            L"",                    // Texto inicial (vacío)
+            WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY, // Estilos
+            0, 0, 0, 0,             // Posición y tamaño (se ajustará en WM_SIZE)
+            hWnd,                   // Ventana padre
+            (HMENU)ID_RESULTADOS,   // Identificador del control
+            hInst,                  // Instancia de la aplicación
+            NULL                    // Parámetros adicionales
+        );
+
         //barra de estado
         hStatus = CreateWindowEx(0, STATUSCLASSNAME, NULL, WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP, 0, 0, 0, 0, hWnd, (HMENU)IDB_STATUS, hInst, NULL);
         dwEVM = SendMessage(hWndEdit, EM_GETEVENTMASK, 0, 0);
@@ -280,6 +295,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         //Fuente de edicion
         hFont = CreateFont(18, 0, 0, 0, 0, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Arial");
         SendMessage(hWndEdit, WM_SETFONT, (WPARAM)hFont, 0);
+
+        //Fuente para los resultados
+        hFontR = CreateFont(18, 0, 0, 0, 0, FALSE, FALSE, FALSE, DEFAULT_CHARSET,
+            OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Arial");
+        SendMessage(hWndResultados, WM_SETFONT, (WPARAM)hFont, 0);
 
         SetFocus(hWndEdit); //Le da el foco al area de edicion
     }
@@ -291,7 +311,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         SendDlgItemMessage(hWnd, IDB_STATUS, WM_SIZE, 0, 0);
         GetWindowRect(hStatus, &rect);
-        MoveWindow(hWndEdit, 0, 70, LOWORD(lParam) / 2, HIWORD(lParam) - (rect.bottom - rect.top) - 70, TRUE);
+        int width = LOWORD(lParam);
+        int height = HIWORD(lParam);
+
+        // Dividir la ventana en dos áreas (50% para cada una)
+        int mitad = width / 2;
+
+        // Redimensionar el área de edición
+        MoveWindow(hWndEdit, 0, 70, mitad, height, TRUE);
+
+        // Redimensionar el área de resultados
+        MoveWindow(hWndResultados, mitad, 70, mitad, height, TRUE);
+
+        // Redimensionar la barra de estado
+        SendMessage(hStatus, WM_SIZE, 0, 0);
     }
     break;
 
@@ -409,141 +442,217 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-        case ID_BTNEJECUTAR:
+        case ID_BTNEJECUTAR: {
             RECT rect;
             GetWindowRect(hWnd, &rect);
-            InvalidateRect(hWnd, &rect, TRUE);
 
-            analisis_lexico_exitoso = 0;
+            // Abrir el archivo resultados.txt
+            FILE* res = fopen("resultados.txt", "r");
+            if (res == NULL) {
+                MessageBox(hWnd, L"No se pudo abrir el archivo resultados.txt", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+
+            // Obtener el tamaño del archivo
+            fseek(res, 0, SEEK_END);
+            long resSize = ftell(res);
+            rewind(res);
+
+            // Leer el contenido del archivo
+            char* buffer = (char*)calloc(resSize + 1, sizeof(char));
+            if (!buffer) {
+                MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
+                fclose(res);
+                break;
+            }
+
+            fread(buffer, 1, resSize, res);
+            buffer[resSize] = '\0'; // Asegurar terminación nula
+            fclose(res);
+
+            // Convertir el contenido a wchar_t
+            wchar_t* wtext = (wchar_t*)calloc(resSize + 1, sizeof(wchar_t));
+            if (!wtext) {
+                MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
+                free(buffer);
+                break;
+            }
+
+            // Convertir de char* a wchar_t*
+            ConvertirCharAWcharT(buffer, wtext, resSize + 1);
+
+            // Mostrar el contenido en el control RichEdit de resultados
+            SetWindowText(hWndResultados, wtext);
+
+            // Liberar memoria
+            free(buffer);
+            free(wtext);
+
+            InvalidateRect(hWnd, &rect, TRUE);
+        }
             break;
         case ID_BTNANALIZAR: {
             FILE* file = fopen("entrada.txt", "w");
 
             if (file != NULL) {
                 int length = GetWindowTextLength(hWndEdit);
-                int i;
                 WCHAR* buffer = new WCHAR[length + 1];
                 GetWindowText(hWndEdit, buffer, length + 1);
                 fputws(buffer, file);
                 free(buffer);
-
                 fclose(file);
-                //MessageBox(hWndEdit, L"Archivo guardado exitosamente como Texto.txt.", L"Exitosamente", MB_OK | MB_ICONINFORMATION);
-            }
-            else
-            {
-                MessageBox(hWndEdit, L"Error al abrir el archivo.", L"Error", MB_OK | MB_ICONERROR);
-            }
-
-
-            //Limpiar errores
-            FILE* errFile = fopen("errores.log", "w");
-            if (errFile) {
-                fclose(errFile); // Al cerrarlo inmediatamente, el archivo queda vacío
             }
             else {
-                perror("Error al limpiar errores.log");
+                MessageBox(hWndEdit, L"Error al abrir el archivo.", L"Error", MB_OK | MB_ICONERROR);
+                break;
             }
+
+            // Limpiar errores
+            FILE* limpiar = fopen("errores.txt", "w+");
+            if (limpiar) {
+                fclose(limpiar); // Al cerrarlo inmediatamente, el archivo queda vacío
+            }
+            else {
+                perror("Error al limpiar errores.txt");
+            }
+
             // Abrir archivos para `yyin` y `yyout`
-            yyin = fopen("entrada.txt", "r");  // Abrir en modo binario para leer UTF-8 sin interpretación
+            yyin = fopen("entrada.txt", "r");
             if (yyin == NULL) {
                 MessageBox(hWnd, L"No es posible cargar yyin", L"Error", MB_OK | MB_ICONERROR);
-                analisis_lexico_exitoso = 0;
+                break;
+            }
+
+            yyout = fopen("resultados.txt", "w");
+            freopen("errores.txt", "a", stderr); // Redirige stderr a errores.log
+
+            if (yyout == NULL) {
+                MessageBox(hWnd, L"No es posible crear yyout", L"Error", MB_OK | MB_ICONERROR);
+                fclose(yyin);
+                break;
+            }
+
+            // Ejecutar análisis
+            parser();
+
+            // Cerrar archivos
+            fclose(yyin);
+            fclose(yyout);
+
+            // Abrir errores.txt en modo lectura
+            FILE* errFile = _wfopen(L"errores.txt", L"r, ccs=UTF-8");
+            if (!errFile) {
+                MessageBox(hWnd, L"No se pudo abrir el archivo de errores.", L"Error", MB_OK | MB_ICONERROR);
+                break;
+            }
+
+            // Obtener el tamaño del archivo
+            fseek(errFile, 0, SEEK_END);
+            long errSize = ftell(errFile);
+            rewind(errFile);
+
+            // Verificar si el archivo tiene contenido
+            if (errSize > 0) {
+                // Reservar memoria para leer el contenido
+                char* errBuffer = (char*)calloc(errSize + 1, sizeof(char));
+                if (!errBuffer) {
+                    MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
+                    fclose(errFile);
+                    break;
+                }
+
+                // Leer el contenido del archivo
+                fread(errBuffer, 1, errSize, errFile);
+                errBuffer[errSize] = '\0'; // Asegurar terminación nula
+                fclose(errFile);
+
+                // Convertir el contenido a wchar_t
+                wchar_t* wErrText = (wchar_t*)calloc(errSize + 1, sizeof(wchar_t));
+                if (!wErrText) {
+                    MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
+                    free(errBuffer);
+                    break;
+                }
+
+                ConvertirCharAWcharT(errBuffer, wErrText, errSize + 1);
+
+                // Mostrar los errores en el control RichEdit
+                SetWindowText(hWndResultados, wErrText);
+
+                // Mostrar un mensaje de error al usuario
+                MessageBox(hWnd, L"Se encontraron errores en el analisis.", L"Error", MB_OK | MB_ICONERROR);
+
+                // Liberar memoria
+                free(errBuffer);
+                free(wErrText);
+
+                return 0; // Asegurar que WndProc retorna un valor válido
             }
             else {
-                yyout = fopen("resultados.txt", "w");
-                freopen("errores.log", "w", stderr); // Redirige stderr a un 
+                fclose(errFile);
+                // Abrir el archivo resultados.txt
+                FILE* res = fopen("resultados.txt", "r");
+                if (res == NULL) {
+                    MessageBox(hWnd, L"No se pudo abrir el archivo resultados.txt", L"Error", MB_OK | MB_ICONERROR);
+                    break;
+                }
 
-                if (yyout == NULL) {
-                    MessageBox(hWnd, L"No es posible crear yyout", L"Error", MB_OK | MB_ICONERROR);
-                    analisis_lexico_exitoso = 0;
+                // Obtener el tamaño del archivo
+                fseek(res, 0, SEEK_END);
+                long resSize = ftell(res);
+                rewind(res);
+
+                // Leer el contenido del archivo
+                char* buffer = (char*)calloc(resSize + 1, sizeof(char));
+                if (!buffer) {
+                    MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
+                    fclose(res);
+                    break;
                 }
-                else {
-                    parser();
-                    MessageBox(hWnd, L"Se analizo correctamente :)", L"Exito", MB_OK | MB_ICONINFORMATION);
-                    analisis_lexico_exitoso = 1;
-                    fclose(yyin);
-                    fclose(yyout);
+
+                fread(buffer, 1, resSize, res);
+                buffer[resSize] = '\0'; // Asegurar terminación nula
+                fclose(res);
+
+                // Convertir el contenido a wchar_t
+                wchar_t* wtext = (wchar_t*)calloc(resSize + 1, sizeof(wchar_t));
+                if (!wtext) {
+                    MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
+                    free(buffer);
+                    break;
                 }
+
+                // Convertir de char* a wchar_t*
+                ConvertirCharAWcharT(buffer, wtext, resSize + 1);
+
+                // Mostrar el contenido en el control RichEdit de resultados
+                SetWindowText(hWndResultados, wtext);
+
+                // Liberar memoria
+                free(buffer);
+                free(wtext);
+                MessageBox(hWnd, L"El analisis se realizo correctamente, no se encontraron errores.", L"Éxito", MB_OK | MB_ICONINFORMATION);
             }
 
+            // Si no hay errores en errores.txt, continuar con la ejecución normal
+            fclose(errFile);
+
+
+
         }
-                           break;
-                           /*case ID_BTNINFO:
-                               DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                               break;*/
+        break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
         }
     }
     break;
-    case WM_PAINT:
-    {
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
+case WM_PAINT:
+{
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint(hWnd, &ps);
 
-        RECT rect;
-        GetWindowRect(hWnd, &rect);
-        /*
-        // Leer y mostrar errores desde errores.log
-        FILE* errFile = fopen("errores.log", "r");
-        if (errFile) {
-            fseek(errFile, 0, SEEK_END);
-            long errSize = ftell(errFile);
-            rewind(errFile);
-
-            char* errBuffer = (char*)calloc(errSize + 1, sizeof(char));
-            if (errBuffer) {
-                fread(errBuffer, 1, errSize, errFile);
-                errBuffer[errSize] = '\0'; // Asegurar terminación nula
-                fclose(errFile);
-
-                // Convertir errores a wchar_t para mostrarlos
-                size_t tamano = 256; // Número de elementos wchar_t
-                wchar_t* errores = (wchar_t*)calloc(tamano, sizeof(wchar_t));
-                ConvertirCharAWcharT(errBuffer, errores, tamano / sizeof(errores[0]));
-                free(errBuffer);
-
-                EscribirTexto(hdc, 750, 400, 24, errores, RGB(255, 0, 0));
-            }
-            else {
-                fclose(errFile);
-                perror("Error al asignar memoria para errores.log");
-            }
-        }
-        else {
-            MessageBox(hWnd, L"No se pudo abrir el archivo de errores.", L"Error", MB_OK | MB_ICONERROR);
-        }
-
-        FILE* res = fopen("resultados.txt", "r");
-        // Leer contenido del archivo en un buffer
-        fseek(res, 0, SEEK_END);
-        long resSize = ftell(res);
-        rewind(res);
-
-        char* buffer = (char*)calloc(resSize + 1, sizeof(char)); // +1 para '\0'
-        if (!buffer) {
-            perror("Error al asignar memoria");
-            fclose(res);
-            return 1;
-        }
-
-        fread(buffer, 1, resSize, res);
-        buffer[resSize] = '\0'; // Asegurar terminación nula
-        fclose(res);
-
-        // Convertir buffer a wchar_t
-        wchar_t texto[100];
-        wchar_t conteoWchar[50]; // Buffer para el conteo       
-        ConvertirCharAWcharT(buffer, texto, sizeof(texto) / sizeof(texto[0]));
-        swprintf(conteoWchar, sizeof(conteoWchar) / sizeof(conteoWchar[0]), L" : %d", texto);
-
-        // Simular el uso de EscribirTexto (requiere un contexto de dispositivo válido)
-        EscribirTexto(hdc, 750, 200, 24, texto, RGB(255, 0, 0)); // Ejemplo de 
-        */
-
-        EndPaint(hWnd, &ps);
-        return 0;  // Devuelve un valor válido
+    EndPaint(hWnd, &ps);
+    return 0;
     }
     break;
     case WM_DESTROY:

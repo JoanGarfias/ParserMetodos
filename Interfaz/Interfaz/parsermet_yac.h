@@ -106,7 +106,7 @@ double fx = 0.0, fdx = 0.0, gx = 0.0;
 
 
 /* Line 189 of yacc.c  */
-#line 110 "parsermet_yac.h"
+#line 111 "parsermet_yac.h"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -199,14 +199,14 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 37 "parsermet.y"
+#line 38 "parsermet.y"
 
     double val;
 
 
 
 /* Line 214 of yacc.c  */
-#line 210 "parsermet_yac.h"
+#line 211 "parsermet_yac.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -218,7 +218,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 222 "parsermet_yac.h"
+#line 223 "parsermet_yac.h"
 
 #ifdef short
 # undef short
@@ -522,10 +522,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    72,    72,    78,    85,    94,    96,    98,   102,   104,
-     111,   113,   117,   119,   121,   123,   125,   127,   129,   131,
-     133,   139,   145,   151,   153,   155,   157,   159,   161,   163,
-     169,   175,   177,   185,   186,   187
+       0,    73,    73,    79,    86,    95,    97,    99,   103,   105,
+     112,   114,   118,   120,   122,   124,   126,   128,   130,   132,
+     134,   140,   146,   152,   154,   156,   158,   160,   162,   164,
+     170,   176,   178,   186,   187,   188
 };
 #endif
 
@@ -1497,7 +1497,7 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 73 "parsermet.y"
+#line 74 "parsermet.y"
     {
         metodo_sel = METODO_NEWTONRAPH;
         asignarValores((yyvsp[(2) - (9)].val), (yyvsp[(4) - (9)].val), (yyvsp[(6) - (9)].val), (yyvsp[(8) - (9)].val));
@@ -1507,7 +1507,7 @@ yyreduce:
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 79 "parsermet.y"
+#line 80 "parsermet.y"
     {
         metodo_sel = METODO_PUNTOFIJO;
         asignarValores((yyvsp[(2) - (9)].val), (yyvsp[(4) - (9)].val), (yyvsp[(6) - (9)].val), (yyvsp[(8) - (9)].val));
@@ -1517,7 +1517,7 @@ yyreduce:
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 86 "parsermet.y"
+#line 87 "parsermet.y"
     {
         metodo_sel = EVALUAR_FUNCION;
         asignarValores((yyvsp[(2) - (5)].val), (yyvsp[(4) - (5)].val), 0.0, 0.0);
@@ -1527,35 +1527,35 @@ yyreduce:
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 94 "parsermet.y"
+#line 95 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (3)].val) + (yyvsp[(3) - (3)].val);     }
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 96 "parsermet.y"
+#line 97 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (3)].val) - (yyvsp[(3) - (3)].val);     }
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 98 "parsermet.y"
+#line 99 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (1)].val);  }
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 102 "parsermet.y"
+#line 103 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (3)].val) * (yyvsp[(3) - (3)].val);     }
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 104 "parsermet.y"
+#line 105 "parsermet.y"
     {
                                 if(set_x){
                                     validar_denominador((yyvsp[(3) - (3)].val));
@@ -1567,77 +1567,77 @@ yyreduce:
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 111 "parsermet.y"
+#line 112 "parsermet.y"
     {   if(set_x) (yyval.val) = pow((yyvsp[(1) - (3)].val), (yyvsp[(3) - (3)].val)); }
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 113 "parsermet.y"
+#line 114 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (1)].val);          }
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parsermet.y"
+#line 118 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * (yyvsp[(2) - (2)].val);          }
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 119 "parsermet.y"
+#line 120 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * x;           }
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 121 "parsermet.y"
+#line 122 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * M_E;         }
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 123 "parsermet.y"
+#line 124 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * M_PI;        }
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 125 "parsermet.y"
+#line 126 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (4)].val) * (yyvsp[(3) - (4)].val);          }
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 127 "parsermet.y"
+#line 128 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * sin((yyvsp[(4) - (5)].val));     }
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 129 "parsermet.y"
+#line 130 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * cos((yyvsp[(4) - (5)].val));     }
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 131 "parsermet.y"
+#line 132 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * tan((yyvsp[(4) - (5)].val));     }
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 133 "parsermet.y"
+#line 134 "parsermet.y"
     {   if(set_x){
                                         validar_denominador(sin((yyvsp[(4) - (5)].val)));
                                         (yyval.val) = (yyvsp[(1) - (5)].val) * (1.0 / sin((yyvsp[(4) - (5)].val)));
@@ -1648,7 +1648,7 @@ yyreduce:
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 139 "parsermet.y"
+#line 140 "parsermet.y"
     {   if(set_x){
                                         validar_denominador(cos((yyvsp[(4) - (5)].val)));
                                         (yyval.val) = (yyvsp[(1) - (5)].val) * (1.0 / cos((yyvsp[(4) - (5)].val)));
@@ -1659,7 +1659,7 @@ yyreduce:
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 145 "parsermet.y"
+#line 146 "parsermet.y"
     {   if(set_x){
                                         validar_denominador(tan((yyvsp[(4) - (5)].val)));
                                         (yyval.val) = (yyvsp[(1) - (5)].val) * (1.0 / tan((yyvsp[(4) - (5)].val)));
@@ -1670,49 +1670,49 @@ yyreduce:
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 151 "parsermet.y"
+#line 152 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * asin((yyvsp[(4) - (5)].val));    }
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 153 "parsermet.y"
+#line 154 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * acos((yyvsp[(4) - (5)].val));    }
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 155 "parsermet.y"
+#line 156 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * atan((yyvsp[(4) - (5)].val));    }
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 157 "parsermet.y"
+#line 158 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * sinh((yyvsp[(4) - (5)].val)); }
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 159 "parsermet.y"
+#line 160 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * cosh((yyvsp[(4) - (5)].val)); }
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 161 "parsermet.y"
+#line 162 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * tanh((yyvsp[(4) - (5)].val)); }
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 163 "parsermet.y"
+#line 164 "parsermet.y"
     {   if(set_x){
                                         if((yyvsp[(4) - (5)].val) <= 0) yyerror("Error: logaritmo natural de un número negativo o cero");
                                         else (yyval.val) = (yyvsp[(1) - (5)].val) * log((yyvsp[(4) - (5)].val));
@@ -1723,7 +1723,7 @@ yyreduce:
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 169 "parsermet.y"
+#line 170 "parsermet.y"
     {   if(set_x){
                                         if((yyvsp[(4) - (5)].val) <= 0) yyerror("Error: logaritmo base 10 de un número negativo o cero");
                                         else (yyval.val) = (yyvsp[(1) - (5)].val) * log10((yyvsp[(4) - (5)].val));
@@ -1734,14 +1734,14 @@ yyreduce:
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 175 "parsermet.y"
+#line 176 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * exp((yyvsp[(4) - (5)].val));     }
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 177 "parsermet.y"
+#line 178 "parsermet.y"
     {   if(set_x){
                                         if((yyvsp[(4) - (5)].val) < 0.0) yyerror("Raiz negativa");
                                         else (yyval.val) = (yyvsp[(1) - (5)].val) * sqrt((yyvsp[(4) - (5)].val));
@@ -1752,28 +1752,28 @@ yyreduce:
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 185 "parsermet.y"
+#line 186 "parsermet.y"
     { (yyval.val) = 1.0;     }
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 186 "parsermet.y"
+#line 187 "parsermet.y"
     { (yyval.val) = -1.0;    }
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 187 "parsermet.y"
+#line 188 "parsermet.y"
     { (yyval.val) = 1.0;     }
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1777 "parsermet_yac.h"
+#line 1778 "parsermet_yac.h"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1985,7 +1985,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 190 "parsermet.y"
+#line 191 "parsermet.y"
 
 
 void validar_denominador(double b){
@@ -2026,57 +2026,78 @@ void parser() {
     fclose(yyin);
     fclose(yyout);
 
-    if(metodo_sel != EVALUAR_FUNCION){
+    if (metodo_sel != EVALUAR_FUNCION) {
+        FILE *res = fopen("resultados.txt", "a+");
+        fprintf(res, "%-10s %-12s %-12s", "Iteración", "X", "f(X)");
+        if (metodo_sel == METODO_NEWTONRAPH)
+            fprintf(res, " %-12s", "f'(X)");
+        else
+            fprintf(res, " %-12s", "g(X)");
+        fprintf(res, " %-12s\n", "Error");
+
+        // Separador visual
+        fprintf(res, "---------- ------------ ------------");
+        if (metodo_sel == METODO_NEWTONRAPH)
+            fprintf(res, " ------------");
+        else
+            fprintf(res, " ------------");
+        fprintf(res, " ------------\n");
+
+        // Cerrar el archivo temporalmente
+        fclose(res);
+
+        // Iterar hasta que el error sea menor que el error esperado
         while (error > error_esperado) {
-                i++;
-                yyin = fopen("entrada.txt", "r");
-                yyparse();
-                fclose(yyin);
+            i++;
 
-                if(metodo_sel == METODO_NEWTONRAPH){
-                    validar_denominador(fdx);
-                    x_nuevo = x - (fx / fdx);
-                }
-                else{
-                    x_nuevo = gx;
-                }
+            yyin = fopen("entrada.txt", "r");
+            yyparse();
+            fclose(yyin);
 
-                error = fabs(x_nuevo - x);
-                x = x_nuevo;
+            if (metodo_sel == METODO_NEWTONRAPH) {
+                validar_denominador(fdx);
+                x_nuevo = x - (fx / fdx);
+            } else {
+                x_nuevo = gx;
+            }
 
-                FILE *res = fopen("resultados.txt", "a+");
+            error = fabs(x_nuevo - x);
+            x = x_nuevo;
 
-                fprintf(res, "%d %f %f ", i, x, fx);
-                if(metodo_sel == METODO_NEWTONRAPH)
-                    fprintf(res, "%f ", fdx);
-                else
-                    fprintf(res, "%f ", gx);
-                fprintf(res, "%f\n", error);
+            res = fopen("resultados.txt", "a");
 
-                fclose(res);
+            // Escribir los resultados en formato tabular
+            fprintf(res, "%-10d %-12.6f %-12.6f", i, x, fx);
+            if (metodo_sel == METODO_NEWTONRAPH)
+                fprintf(res, " %-12.6f", fdx);
+            else
+                fprintf(res, " %-12.6f", gx);
+            fprintf(res, " %-12.6f\n", error);
+
+            fclose(res);
         }
-    }
-    else{
+    } else {
         FILE *res = fopen("resultados.txt", "w");
         yyin = fopen("entrada.txt", "r");
         yyout = fopen("salida.txt", "w");
         yyparse();
-        fprintf(res, "%f %f", x, fx);
+
+        fprintf(res, "f(%.6f) = %.6f\n", x, fx);
+
         fclose(yyin);
         fclose(yyout);
         fclose(res);
     }
 
-    x = 10.0, x_ant = 0.0;
+    x = 10.0, x_ant = 0.0, linea_actual = 1;
     metodo_sel = 0, set_x = 0, i = 0;
     fx = 0.0, fdx = 0.0, gx = 0.0, error_esperado = 0.2;
 }
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error: %s\n", s);
-    exit(EXIT_FAILURE);
+    fprintf(stderr, "Error (Linea %d): %s\n", linea_actual, s);
 }
 
 void yywarning(const char *msg) {
-    fprintf(stderr, "Advertencia: %s\n", msg);
+    fprintf(stderr, "Advertencia (Linea %d): %s\n", linea_actual, msg);
 }

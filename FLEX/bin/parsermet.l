@@ -4,9 +4,14 @@
 #include "parsermetTok.h"
 
 void yyerror(const char *s);
+char error_message[100];
+int linea_actual = 1;
+
 %}
 
 %%
+
+\n { linea_actual++; }
 
 "nt"[ \t\n]*"{"[ \t\n]*"x"[ \t\n]*"="   { return NT_DEC;    }
 
@@ -68,12 +73,11 @@ void yyerror(const char *s);
                         return NUMERO;
                     }
 
+[ \t\r]+          { /* Ignorar */ }
 
-
-
-[ \t\n\r]+          { /* Ignorar */ }
-
-.                   { yyerror("Token no valido"); }
+.                   {   snprintf(error_message, sizeof(error_message), "Token '%s' no válido", yytext);
+                        yyerror(error_message);
+                    }
 
 %%
 
