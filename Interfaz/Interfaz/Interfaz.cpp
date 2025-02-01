@@ -1,8 +1,9 @@
-// INTERFAZ.cpp : Define el punto de entrada de la aplicación.
+// Interfaz.cpp : Define el punto de entrada de la aplicación.
 //
 #include <windows.h>
-#include "framework.h>
+#include "framework.h"
 #include "Interfaz.h"
+#include "parsermet_yac.h"
 
 #pragma comment(lib, "comctl32.lib")
 #define MAX_LOADSTRING 100
@@ -17,7 +18,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // nombre de clase de la ventana
 
 HWND hWndToolBar;                               //Variable para la barra de herramientas
 const int NUMBUTTONS = 3;                       //Numero de botones en la barra,
-extern int yylex();
+extern int yyparse();
 extern FILE* yyin;
 extern FILE* yyout;
 int analisis_lexico_exitoso = 0;
@@ -47,7 +48,7 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 void EscribirTexto(HDC hDC, int x, int y, int tf1, const wchar_t texto[128], COLORREF color)
 {
     HFONT fuente1, fanterior;
-    LOGFONT lf1 = { tf1, 0, 0, 900, 300, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS,PROOF_QUALITY, DEFAULT_PITCH | FF_ROMAN, L"Arial" };
+    LOGFONT lf1 = { tf1, 0, 0, 900, 300, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_ROMAN, L"Arial" };
     COLORREF coloriginal;
 
     fuente1 = CreateFontIndirect(&lf1);
@@ -55,12 +56,49 @@ void EscribirTexto(HDC hDC, int x, int y, int tf1, const wchar_t texto[128], COL
 
     fanterior = (HFONT)SelectObject(hDC, fuente1);
     coloriginal = SetTextColor(hDC, color);
-    TextOut(hDC, x, y, texto, _tcsclen(texto));
+
+    int lineHeight = tf1 + 5;
+    const wchar_t* ptr = texto;
+    int x_aux = x;
+    int y_aux = y;
+
+    wchar_t line[128];
+    int linePos = 0;
+
+    while (*ptr != L'\0') {
+
+        if (*ptr == L'\n' || (*ptr == L'\r' && *(ptr + 1) == L'\n')) {
+
+            if (linePos > 0) {
+                line[linePos] = L'\0';
+                TextOut(hDC, x_aux, y_aux, line, linePos);
+                y_aux += lineHeight;
+                linePos = 0;  // Reseteamos la posición 
+            }
+            x_aux = x;  // Restauramos la posición X original
+            if (*ptr == L'\r') {
+                ptr++;
+            }
+        }
+        else {
+            // Acumulamos los caracteres de la línea
+            line[linePos++] = *ptr;
+        }
+
+        ptr++;
+    }
+
+    if (linePos > 0) {
+        line[linePos] = L'\0';
+        TextOut(hDC, x_aux, y_aux, line, linePos);
+    }
 
     SelectObject(hDC, fanterior);
     SetTextColor(hDC, coloriginal);
     DeleteObject(fuente1);
 }
+
+
 
 void ConvertirCharAWcharT(const char* cadena, wchar_t* resultado, int tamanoResultado) {
     int longitud = MultiByteToWideChar(CP_UTF8, 0, cadena, -1, resultado, tamanoResultado);
@@ -72,54 +110,6 @@ void ConvertirCharAWcharT(const char* cadena, wchar_t* resultado, int tamanoResu
     }
 }
 
-
-void DibujarPalabrasRepetidas(HDC hdc, int xInicial, int yInicial, int xLim, int yLim) {
-    int maxConteo = 0, proporcion = 0;
-    int maxConteo_max = 0;
-    int banderaPos = 0;
-    int yPosSup = yInicial, yPosInf = yInicial;
-    int xPos = xInicial;
-    int yPosSel = yInicial; //Cual de las dos yPos se escoge
-    int tamLetra = 45;
-    COLORREF colorAleatorio = RGB(0, 0, 0);
-    int i;
-
-    maxConteo = repetidas.lista[0].conteo;
-    maxConteo_max = maxConteo;
-
-    wchar_t palabraWchar[100];
-    wchar_t conteoWchar[50]; // Buffer para el conteo
-
-    // Calcular la posición de cada palabra
-    for (i = 0; i < repetidas.tam && yPosSup > xLim && yPosInf < yLim; i++) {
-        colorAleatorio = RGB(rand() % 256, rand() % 256, rand() % 256);
-
-        ConvertirCharAWcharT(repetidas.lista[i].texto, palabraWchar, sizeof(palabraWchar) / sizeof(palabraWchar[0]));
-        swprintf(conteoWchar, sizeof(conteoWchar) / sizeof(conteoWchar[0]), L" : %d", repetidas.lista[i].conteo);
-
-        // Dibujar la palabra
-        EscribirTexto(hdc, xPos, yPosSel, tamLetra, palabraWchar, colorAleatorio);
-
-        // Dibujar el conteo al lado de la palabra
-        EscribirTexto(hdc, xPos + 100, yPosSel, tamLetra, conteoWchar, colorAleatorio);
-
-        banderaPos = ~banderaPos;
-        if (repetidas.lista[i].conteo < maxConteo) {
-            tamLetra = tamLetra - 2 - (maxConteo_max / repetidas.lista[i].conteo);
-            maxConteo = repetidas.lista[i].conteo;
-        }
-        if (banderaPos) { // Va pa arriba
-            yPosSup -= 25 + tamLetra;
-            yPosSel = yPosSup;
-        }
-        else { // Va pa abajo
-            yPosInf += 25 + tamLetra;
-            yPosSel = yPosInf;
-        }
-    }
-
-}
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR    lpCmdLine,
@@ -128,7 +118,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Colocar código aquí.
 
     // Inicializar cadenas globales
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -421,41 +410,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
         case ID_BTNEJECUTAR:
-            if (analisis_lexico_exitoso) {
-                //Por defecto se mostraran las palabras que quepan, pero aca se puede poner un numero remplazando
-                //la variable t.cant_palabras, siempre y cuando ese valor sea menor o igual que la cantidad de palabras analizadas.
-                //para una futura version, en la interfaz se podra escoger cuantas palabras ver graficamente
-                repetidas = obtenerMasRepetidas(&t, t.cant_palabras);
-                RECT rect;
-                GetWindowRect(hWnd, &rect);
-                InvalidateRect(hWnd, &rect, TRUE);
-                analisis_lexico_exitoso = 0;
-                eliminarTabla();
-            }
-            else {
-                MessageBox(hWnd, L"No se ha realizado un analisis", L"Error", MB_OK | MB_ICONERROR);
-            }
+            RECT rect;
+            GetWindowRect(hWnd, &rect);
+            InvalidateRect(hWnd, &rect, TRUE);
+
+            analisis_lexico_exitoso = 0;
             break;
         case ID_BTNANALIZAR: {
-            const WCHAR* nombre_archivo = L"entrada.txt";
-            FILE* file;
-            _wfopen_s(&file, nombre_archivo, L"w, ccs=UTF-8");
+            FILE* file = fopen("entrada.txt", "w");
 
             if (file != NULL) {
-                setlocale(LC_ALL, "es_ES.utf8"); //ACENTOS
-
                 int length = GetWindowTextLength(hWndEdit);
+                int i;
                 WCHAR* buffer = new WCHAR[length + 1];
                 GetWindowText(hWndEdit, buffer, length + 1);
-
-                // Convertir el texto a minúsculas
-                for (int i = 0; i < length; ++i)
-                {
-                    buffer[i] = towlower(buffer[i]);
-                }
-
                 fputws(buffer, file);
-                delete[] buffer;
+                free(buffer);
 
                 fclose(file);
                 //MessageBox(hWndEdit, L"Archivo guardado exitosamente como Texto.txt.", L"Exitosamente", MB_OK | MB_ICONINFORMATION);
@@ -464,6 +434,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             {
                 MessageBox(hWndEdit, L"Error al abrir el archivo.", L"Error", MB_OK | MB_ICONERROR);
             }
+
+
+            //Limpiar errores
+            FILE* errFile = fopen("errores.log", "w");
+            if (errFile) {
+                fclose(errFile); // Al cerrarlo inmediatamente, el archivo queda vacío
+            }
+            else {
+                perror("Error al limpiar errores.log");
+            }
             // Abrir archivos para `yyin` y `yyout`
             yyin = fopen("entrada.txt", "r");  // Abrir en modo binario para leer UTF-8 sin interpretación
             if (yyin == NULL) {
@@ -471,17 +451,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 analisis_lexico_exitoso = 0;
             }
             else {
-                yyout = fopen("salida.txt", "w");
+                yyout = fopen("resultados.txt", "w");
+                freopen("errores.log", "w", stderr); // Redirige stderr a un 
+
                 if (yyout == NULL) {
                     MessageBox(hWnd, L"No es posible crear yyout", L"Error", MB_OK | MB_ICONERROR);
                     analisis_lexico_exitoso = 0;
                 }
                 else {
-                    iniciarTabla();
-                    yylex();
+                    parser();
                     MessageBox(hWnd, L"Se analizo correctamente :)", L"Exito", MB_OK | MB_ICONINFORMATION);
                     analisis_lexico_exitoso = 1;
-
                     fclose(yyin);
                     fclose(yyout);
                 }
@@ -504,20 +484,69 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         RECT rect;
         GetWindowRect(hWnd, &rect);
+        /*
+        // Leer y mostrar errores desde errores.log
+        FILE* errFile = fopen("errores.log", "r");
+        if (errFile) {
+            fseek(errFile, 0, SEEK_END);
+            long errSize = ftell(errFile);
+            rewind(errFile);
 
-        int limXizquierda = (rect.right - rect.left) / 2 + ((rect.right - rect.left) / 4);
-        int ycentro = ((rect.bottom - rect.top) / 2) - 60;
+            char* errBuffer = (char*)calloc(errSize + 1, sizeof(char));
+            if (errBuffer) {
+                fread(errBuffer, 1, errSize, errFile);
+                errBuffer[errSize] = '\0'; // Asegurar terminación nula
+                fclose(errFile);
 
-        if (repetidas.tam > 0)
-            DibujarPalabrasRepetidas(hdc, limXizquierda - 50, ycentro, 60, rect.bottom - 40);
+                // Convertir errores a wchar_t para mostrarlos
+                size_t tamano = 256; // Número de elementos wchar_t
+                wchar_t* errores = (wchar_t*)calloc(tamano, sizeof(wchar_t));
+                ConvertirCharAWcharT(errBuffer, errores, tamano / sizeof(errores[0]));
+                free(errBuffer);
 
+                EscribirTexto(hdc, 750, 400, 24, errores, RGB(255, 0, 0));
+            }
+            else {
+                fclose(errFile);
+                perror("Error al asignar memoria para errores.log");
+            }
+        }
+        else {
+            MessageBox(hWnd, L"No se pudo abrir el archivo de errores.", L"Error", MB_OK | MB_ICONERROR);
+        }
+
+        FILE* res = fopen("resultados.txt", "r");
+        // Leer contenido del archivo en un buffer
+        fseek(res, 0, SEEK_END);
+        long resSize = ftell(res);
+        rewind(res);
+
+        char* buffer = (char*)calloc(resSize + 1, sizeof(char)); // +1 para '\0'
+        if (!buffer) {
+            perror("Error al asignar memoria");
+            fclose(res);
+            return 1;
+        }
+
+        fread(buffer, 1, resSize, res);
+        buffer[resSize] = '\0'; // Asegurar terminación nula
+        fclose(res);
+
+        // Convertir buffer a wchar_t
+        wchar_t texto[100];
+        wchar_t conteoWchar[50]; // Buffer para el conteo       
+        ConvertirCharAWcharT(buffer, texto, sizeof(texto) / sizeof(texto[0]));
+        swprintf(conteoWchar, sizeof(conteoWchar) / sizeof(conteoWchar[0]), L" : %d", texto);
+
+        // Simular el uso de EscribirTexto (requiere un contexto de dispositivo válido)
+        EscribirTexto(hdc, 750, 200, 24, texto, RGB(255, 0, 0)); // Ejemplo de 
+        */
 
         EndPaint(hWnd, &ps);
         return 0;  // Devuelve un valor válido
     }
     break;
     case WM_DESTROY:
-        eliminarTabla();
         PostQuitMessage(0);
         break;
     default:

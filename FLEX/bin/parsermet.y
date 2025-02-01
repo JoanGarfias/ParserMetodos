@@ -273,11 +273,6 @@ void parser() {
     fx = 0.0, fdx = 0.0, gx = 0.0, error_esperado = 0.2;
 }
 
-int main(){
-    parser();
-    return 0;
-}
-
 void yyerror(const char *s) {
     fprintf(stderr, "Error: %s\n", s);
     exit(EXIT_FAILURE);

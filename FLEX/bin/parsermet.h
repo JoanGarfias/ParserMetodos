@@ -446,9 +446,9 @@ char *yytext;
 #line 1 "parsermet.l"
 #define INITIAL 0
 #line 2 "parsermet.l"
-#include "parsermet_yac.h"	
 #include <stdlib.h>
 #include <string.h>
+#include "parsermetTok.h"
 
 void yyerror(const char *s);
 #line 455 "parsermet.h"

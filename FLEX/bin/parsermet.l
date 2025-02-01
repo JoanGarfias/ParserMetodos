@@ -1,7 +1,7 @@
 %{
-#include "parsermet_yac.h"	
 #include <stdlib.h>
 #include <string.h>
+#include "parsermetTok.h"
 
 void yyerror(const char *s);
 %}
