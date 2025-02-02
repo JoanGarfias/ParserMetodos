@@ -22,6 +22,9 @@
 #define IDC_STATIC                      -1
 #define ID_RESULTADOS 1001  // Identificador único para el control RichEdit
 #define ID_ERRORES 302
+#define ID_AYUDANT 501
+#define ID_AYUDAPF 502
+#define ID_AYUDAFUNC 503
 
 // Next default values for new objects
 // 

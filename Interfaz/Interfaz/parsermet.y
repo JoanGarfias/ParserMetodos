@@ -58,18 +58,59 @@ double fx = 0.0, fdx = 0.0, gx = 0.0;
 
 prog:  
     /*
+    Gramatica para metodo de Newton Raphson
     P -> nt{
-        x = NUMERO
-        f(x) = expr
-        fd(x) = expr
-        error = NUMERO
+            x = NUMERO
+            f(x) = expr
+            fd(x) = expr
+            error = NUMERO
         }
+    Gramatica para metodo de Punto Fijo
     P -> pf{
+            x = NUMERO
+            f(x) = expr
+            g(x) = expr
+            error = NUMERO
+        }
+    Gramatica para evaluar funciones
+    P -> {
         x = NUMERO
         f(x) = expr
-        g(x) = expr
-        error = NUMERO
-    }
+        }
+
+    Gramatica de expr
+    expr ->   expr + term
+            | expr - term
+            | term
+    
+    Gramatica de term
+    term ->   term * factor
+            | term / factor
+            | term ^ factor
+            | factor
+    
+    Gramatica de factor
+    factor ->   NUMERO 
+                | X 
+                | EULER
+                | PI 
+                | SIN 
+                | COS 
+                | TAN 
+                | SEC 
+                | COSEC 
+                | COT 
+                | ASIN 
+                | ACOS 
+                | ATAN 
+                | SINH
+                | COSH
+                | TANH
+                | LOG10
+                | LOGE 
+                | EXP 
+                | RAIZ 
+                | ( expr )
     */
     NT_DEC NUMERO FX_DEC expr FDX_DEC expr ERROR_DEC NUMERO '}'
     {

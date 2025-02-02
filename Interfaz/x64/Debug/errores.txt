@@ -1,2 +1,0 @@
-Error (Linea 1): Sintaxis no valida en el token 'n'
-Error (Linea 1): Se ha producido un error sintáctico inesperado

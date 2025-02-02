@@ -440,12 +440,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // Analizar las selecciones de menú:
         switch (wmId)
         {
+        case ID_AYUDANT: {
+            LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
+            LPCWSTR rutaArchivo = L"ayuda_newton.pdf";      // Archivo como argumento
+
+            ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
+        }
+        case ID_AYUDAPF: {
+            LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
+            LPCWSTR rutaArchivo = L"ayuda_newton.pdf";      // Archivo como argumento
+
+            ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
+        }
+        break;
+        case ID_AYUDAFUNC: {
+            LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
+            LPCWSTR rutaArchivo = L"ayuda_newton.pdf";      // Archivo como argumento
+
+            ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
+        }
         case IDM_ABOUT:
             DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-            break;
+        break;
         case IDM_EXIT:
             DestroyWindow(hWnd);
-            break;
+        break;
         case ID_ERRORES:
         {
             if (HIWORD(wParam) == LBN_DBLCLK) // Verificar si es doble clic en la lista

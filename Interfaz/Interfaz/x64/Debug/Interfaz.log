@@ -22,10 +22,10 @@ D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(11,9): warning C400
   
 D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(64,13): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
 D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(279,28): warning C4244: '=': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(454,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(467,39): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(468,37): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(484,43): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(485,41): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(726,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
+D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(462,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
+D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(475,39): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(476,37): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(492,43): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(493,41): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(734,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
   Interfaz.vcxproj -> D:\REPOSITORIOS\ParserMetodos\Interfaz\x64\Debug\Interfaz.exe
