@@ -65,7 +65,8 @@
      FX_DEC = 281,
      FDX_DEC = 282,
      GX_DEC = 283,
-     ERROR_DEC = 284
+     ERROR_DEC = 284,
+     ERROR_T = 285
    };
 #endif
 /* Tokens.  */
@@ -96,6 +97,7 @@
 #define FDX_DEC 282
 #define GX_DEC 283
 #define ERROR_DEC 284
+#define ERROR_T 285
 
 
 
@@ -105,14 +107,14 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 37 "parsermet.y"
+#line 38 "parsermet.y"
 
     double val;
 
 
 
 /* Line 1676 of yacc.c  */
-#line 116 "parsermetTok.h"
+#line 118 "parsermetTok.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

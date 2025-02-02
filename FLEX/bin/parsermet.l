@@ -5,13 +5,12 @@
 
 void yyerror(const char *s);
 char error_message[100];
-int linea_actual = 1;
 
 %}
 
-%%
+%option yylineno
 
-\n { linea_actual++; }
+%%
 
 "nt"[ \t\n]*"{"[ \t\n]*"x"[ \t\n]*"="   { return NT_DEC;    }
 
@@ -63,20 +62,21 @@ int linea_actual = 1;
 "e"             { return EULER; }
 "pi"            { return PI;    }
 
-[0-9]+(\.[0-9]*)?   { 
-                        yylval.val = atof(yytext);  
-                        return NUMERO;
-                    }
+-?[0-9]+(\.[0-9]*)?   { 
+    yylval.val = atof(yytext);  
+    return NUMERO;
+}
 
-\.[0-9]+            {
-                        yylval.val = atof(yytext);
-                        return NUMERO;
-                    }
+-?\.[0-9]+            {
+    yylval.val = atof(yytext);
+    return NUMERO;
+}
 
 [ \t\r]+          { /* Ignorar */ }
 
-.                   {   snprintf(error_message, sizeof(error_message), "Token '%s' no válido", yytext);
+.                   {   snprintf(error_message, sizeof(error_message), "Sintaxis no valida en el token '%s'", yytext);
                         yyerror(error_message);
+                        return ERROR_T;
                     }
 
 %%

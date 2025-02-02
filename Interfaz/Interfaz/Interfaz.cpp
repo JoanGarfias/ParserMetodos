@@ -1,6 +1,7 @@
 // Interfaz.cpp : Define el punto de entrada de la aplicación.
 //
 #include <windows.h>
+#include <windowsx.h>
 #include "framework.h"
 #include "Interfaz.h"
 #include "parsermet_yac.h"
@@ -98,6 +99,25 @@ void EscribirTexto(HDC hDC, int x, int y, int tf1, const wchar_t texto[128], COL
     DeleteObject(fuente1);
 }
 
+int extraerLineaDeError(const wchar_t* mensaje)
+{
+    int linea = -1;
+    swscanf(mensaje, L"Error (Linea %d):", &linea);
+    return linea;
+}
+
+
+
+void navegarALineaEnEdit(HWND hWndEdit, int linea)
+{
+    int pos = SendMessage(hWndEdit, EM_LINEINDEX, (WPARAM)(linea - 1), 0);
+    if (pos != -1)
+    {
+        SendMessage(hWndEdit, EM_SETSEL, pos, pos);
+        SetFocus(hWndEdit);
+    }
+}
+
 
 
 void ConvertirCharAWcharT(const char* cadena, wchar_t* resultado, int tamanoResultado) {
@@ -160,7 +180,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
     wcex.lpfnWndProc = WndProc;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
@@ -255,9 +275,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static HWND hWndEdit;
     static HWND hWndResultados;
     static HWND hStatus;
+    static HWND hWndErrores;
     DWORD dwEVM;
     HFONT hFont;
-    HFONT hFontR;
+    HFONT hFontR; //Para resultado
+    HFONT hFontER; //Para errores
 
     TCHAR* ptchBuffer = NULL;
     static FILE* entrada;
@@ -271,20 +293,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         LoadLibrary(L"riched20.dll");
 
         //Area de edicion
-        hWndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, RICHEDIT_CLASS, L"", WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL, 0, 0, 0, 0, hWnd, (HMENU)ID_EDITRICH, hInst, NULL);
+        hWndEdit = CreateWindowEx(
+            WS_EX_CLIENTEDGE,
+            RICHEDIT_CLASS, 
+            L"",
+            WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN,
+            0, 0, 0, 0, 
+            hWnd,
+            (HMENU)ID_EDITRICH,
+            hInst,
+            NULL
+        );
 
         //Area de resultados
         hWndResultados = CreateWindowEx(
             WS_EX_CLIENTEDGE,       // Estilo extendido
             RICHEDIT_CLASS,         // Clase del control (RichEdit)
             L"",                    // Texto inicial (vacío)
-            WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY, // Estilos
+            WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | ES_NOHIDESEL, // Estilos
             0, 0, 0, 0,             // Posición y tamaño (se ajustará en WM_SIZE)
             hWnd,                   // Ventana padre
             (HMENU)ID_RESULTADOS,   // Identificador del control
             hInst,                  // Instancia de la aplicación
             NULL                    // Parámetros adicionales
         );
+
+        hWndErrores = CreateWindow(L"listbox", NULL, WS_CHILDWINDOW | WS_VISIBLE
+            | WS_VSCROLL | WS_HSCROLL | LBS_STANDARD,
+            0, 0, 0, 0,
+            hWnd, (HMENU)ID_ERRORES, hInst, NULL);
+
+        // Habilitar CS_DBLCLKS en la clase del control RichEdit
+        /*LONG_PTR style = GetClassLongPtr(hWndResultados, GCL_STYLE);
+        SetClassLongPtr(hWndResultados, GCL_STYLE, style | CS_DBLCLKS);*/
 
         //barra de estado
         hStatus = CreateWindowEx(0, STATUSCLASSNAME, NULL, WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP, 0, 0, 0, 0, hWnd, (HMENU)IDB_STATUS, hInst, NULL);
@@ -293,13 +334,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         SendMessage(hWndEdit, EM_SETEVENTMASK, 0, dwEVM);
 
         //Fuente de edicion
-        hFont = CreateFont(18, 0, 0, 0, 0, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Arial");
+        hFont = CreateFont(24, 0, 0, 0, 0, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Consolas");
         SendMessage(hWndEdit, WM_SETFONT, (WPARAM)hFont, 0);
 
         //Fuente para los resultados
-        hFontR = CreateFont(18, 0, 0, 0, 0, FALSE, FALSE, FALSE, DEFAULT_CHARSET,
-            OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Arial");
+        hFontR = CreateFont(12, 0, 0, 0, 0, FALSE, FALSE, FALSE, DEFAULT_CHARSET,
+            OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Segoe UI");
         SendMessage(hWndResultados, WM_SETFONT, (WPARAM)hFont, 0);
+
+        hFontER = CreateFont(24, 0, 0, 0, 0, FALSE, FALSE, FALSE,
+            DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+            CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+            DEFAULT_PITCH, L"Courier New");
+
+        SendMessage(hWndErrores, WM_SETFONT, (WPARAM)hFontER, 0);
 
         SetFocus(hWndEdit); //Le da el foco al area de edicion
     }
@@ -318,15 +366,88 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int mitad = width / 2;
 
         // Redimensionar el área de edición
-        MoveWindow(hWndEdit, 0, 70, mitad, height, TRUE);
+        MoveWindow(hWndEdit, 0, 70, mitad - (mitad/4), height / 2 - 50, TRUE);
 
         // Redimensionar el área de resultados
-        MoveWindow(hWndResultados, mitad, 70, mitad, height, TRUE);
+        MoveWindow(hWndResultados, mitad - (mitad/4), 70, mitad + (mitad/4), height, TRUE);
+        MoveWindow(hWndErrores, 0, height / 2 + 50, mitad - (mitad/4), height / 2, TRUE);
 
         // Redimensionar la barra de estado
         SendMessage(hStatus, WM_SIZE, 0, 0);
+
+        CHARFORMAT charFormat = { 0 };  // Inicializamos la estructura a cero
+        charFormat.cbSize = sizeof(CHARFORMAT);  // Especificamos el tamaño de la estructura
+        charFormat.dwMask = CFM_COLOR;  // Usamos la máscara para indicar que queremos establecer el color
+        charFormat.crTextColor = RGB(40, 40, 40);  // Establecer el color de texto (gris oscuro)
+
+        // Establecer colores para la ventana de edición (hWndEdit)
+        SendMessage(hWndEdit, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(240, 240, 240));  // Fondo gris claro
+        SendMessage(hWndEdit, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&charFormat);  // Configurar el color de texto (oscuro)
+
+        // Establecer colores para el área de resultados (hWndResultados)
+        SendMessage(hWndResultados, WM_CTLCOLORSTATIC, (WPARAM)GetDC(hWndResultados), (LPARAM)hWndResultados);
+        SetTextColor(GetDC(hWndResultados), RGB(40, 40, 40));  // Texto gris oscuro
+        SetBkColor(GetDC(hWndResultados), RGB(255, 255, 255));  // Fondo blanco
+
+        // Establecer colores para el área de errores (hWndErrores)
+        SendMessage(hWndErrores, WM_CTLCOLORSTATIC, (WPARAM)GetDC(hWndErrores), (LPARAM)hWndErrores);
+        SetTextColor(GetDC(hWndErrores), RGB(255, 69, 0));  // Texto en naranja para destacar errores
+        SetBkColor(GetDC(hWndErrores), RGB(240, 240, 240));  // Fondo gris claro
+
+        // Configurar los colores del control de la barra de estado
+        SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)L"Listo");
     }
     break;
+
+    case WM_CTLCOLOREDIT:  // Manejador del mensaje de pintura para Edit Controls
+    {
+        // Cambiar el color de texto en el control de edición
+        if ((HWND)lParam == hWndEdit)
+        {
+            HDC hdc = (HDC)wParam;
+
+            // Establecer color de texto (gris oscuro)
+            SetTextColor(hdc, RGB(40, 40, 40));  // Texto oscuro
+
+            // Establecer color de fondo (gris claro)
+            SetBkColor(hdc, RGB(240, 240, 240));  // Fondo gris claro
+
+            // Retornar un pincel para el fondo
+            return (LRESULT)GetStockObject(DC_BRUSH);
+        }
+
+        // Cambiar colores para la ventana de resultados
+        if ((HWND)lParam == hWndResultados)
+        {
+            HDC hdc = (HDC)wParam;
+
+            // Establecer color de texto (gris oscuro)
+            SetTextColor(hdc, RGB(40, 40, 40));  // Texto oscuro
+
+            // Establecer color de fondo (blanco)
+            SetBkColor(hdc, RGB(255, 255, 255));  // Fondo blanco
+
+            // Retornar un pincel para el fondo
+            return (LRESULT)GetStockObject(DC_BRUSH);
+        }
+
+        // Cambiar colores para la ventana de errores
+        if ((HWND)lParam == hWndErrores)
+        {
+            HDC hdc = (HDC)wParam;
+
+            // Establecer color de texto (naranja)
+            SetTextColor(hdc, RGB(255, 69, 0));  // Texto en naranja para errores
+
+            // Establecer color de fondo (gris claro)
+            SetBkColor(hdc, RGB(240, 240, 240));  // Fondo gris claro
+
+            // Retornar un pincel para el fondo
+            return (LRESULT)GetStockObject(DC_BRUSH);
+        }
+    }
+    break;
+
 
     case WM_NOTIFY: //Aqui­ se detecta en que li­nea se esta
     {
@@ -340,7 +461,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
     }
-
+    break;
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
@@ -353,6 +474,47 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case IDM_EXIT:
             DestroyWindow(hWnd);
             break;
+        case ID_ERRORES:
+        {
+            if (HIWORD(wParam) == LBN_DBLCLK) // Verificar si es doble clic en la lista
+            {
+                wchar_t szItemLista[256];  // Buffer donde se almacenará el texto del error
+                int i = SendMessage(hWndErrores, LB_GETCURSEL, 0, 0); // Obtener índice seleccionado
+
+                if (i != LB_ERR) // Verificar que haya una selección válida
+                {
+                    SendMessage(hWndErrores, LB_GETTEXT, i, (LPARAM)szItemLista); // Obtener el texto del error
+                    MessageBox(hWnd, szItemLista, L"Aviso", MB_OK);  // Mostrar el mensaje
+
+                    int errorLine = extraerLineaDeError(szItemLista); // Extraer número de línea del error
+
+                    if (errorLine != -1)
+                    {
+                        // Mover el cursor a la línea
+                        navegarALineaEnEdit(hWndEdit, errorLine);
+
+                        // Resaltar toda la línea
+                        DWORD dwStart = SendMessage(hWndEdit, EM_LINEINDEX, errorLine - 1, 0); // Obtener el índice de inicio de la línea
+                        DWORD dwEnd = SendMessage(hWndEdit, EM_LINEINDEX, errorLine, 0); // Obtener el índice de fin de la línea
+
+                        // Seleccionar la línea
+                        SendMessage(hWndEdit, EM_SETSEL, dwStart, dwEnd);
+
+                        // Establecer el color de fondo o de texto para resaltar (opcional)
+                        // Cambiar el color de fondo de la selección
+                        CHARRANGE charRange;
+                        charRange.cpMin = dwStart;
+                        charRange.cpMax = dwEnd;
+                        SendMessage(hWndEdit, EM_EXSETSEL, 0, (LPARAM)&charRange);
+
+                        // Usar el COLORREF para modificar el color, por ejemplo:
+                        // Cambiar color de fondo a amarillo (RGB
+                    }
+                }
+            }
+        }
+        break;
+
         case ID_ARCHIVO_ABRIR:
         {
             TCHAR szFile[MAX_PATH], szCaption[64 + _MAX_FNAME + _MAX_EXT];
@@ -498,16 +660,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 int length = GetWindowTextLength(hWndEdit);
                 WCHAR* buffer = new WCHAR[length + 1];
                 GetWindowText(hWndEdit, buffer, length + 1);
-                fputws(buffer, file);
-                free(buffer);
+
+                // Crear un nuevo buffer sin '\r'
+                WCHAR* cleanBuffer = new WCHAR[length + 1];
+                int j = 0;
+                for (int i = 0; i < length; i++) {
+                    if (buffer[i] != L'\r') { // Copiar solo si no es '\r'
+                        cleanBuffer[j++] = buffer[i];
+                    }
+                }
+                cleanBuffer[j] = L'\0'; // Terminar correctamente la cadena
+
+                fputws(cleanBuffer, file);
+
+                // Liberar memoria
+                delete[] buffer;
+                delete[] cleanBuffer;
                 fclose(file);
             }
             else {
                 MessageBox(hWndEdit, L"Error al abrir el archivo.", L"Error", MB_OK | MB_ICONERROR);
-                break;
             }
 
+
             // Limpiar errores
+            SendMessage(hWndErrores, LB_RESETCONTENT, 0, 0);
             FILE* limpiar = fopen("errores.txt", "w+");
             if (limpiar) {
                 fclose(limpiar); // Al cerrarlo inmediatamente, el archivo queda vacío
@@ -538,55 +715,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Cerrar archivos
             fclose(yyin);
             fclose(yyout);
-
             // Abrir errores.txt en modo lectura
-            FILE* errFile = _wfopen(L"errores.txt", L"r, ccs=UTF-8");
+            FILE* errFile = fopen("errores.txt", "r");
             if (!errFile) {
                 MessageBox(hWnd, L"No se pudo abrir el archivo de errores.", L"Error", MB_OK | MB_ICONERROR);
                 break;
             }
 
-            // Obtener el tamaño del archivo
-            fseek(errFile, 0, SEEK_END);
-            long errSize = ftell(errFile);
-            rewind(errFile);
+            // Buffer para leer línea por línea
+            char errBuffer[256];
 
-            // Verificar si el archivo tiene contenido
-            if (errSize > 0) {
-                // Reservar memoria para leer el contenido
-                char* errBuffer = (char*)calloc(errSize + 1, sizeof(char));
-                if (!errBuffer) {
-                    MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
-                    fclose(errFile);
-                    break;
-                }
+            // Leer línea por línea y agregar a la ListBox
+            while (fgets(errBuffer, sizeof(errBuffer), errFile)) {
+                // Convertir la línea de char* a wchar_t*
+                wchar_t wErrLine[256];
+                ConvertirCharAWcharT(errBuffer, wErrLine, sizeof(wErrLine) / sizeof(wErrLine[0]));
 
-                // Leer el contenido del archivo
-                fread(errBuffer, 1, errSize, errFile);
-                errBuffer[errSize] = '\0'; // Asegurar terminación nula
-                fclose(errFile);
+                // Agregar la línea de error a la ListBox
+                SendMessage(hWndErrores, LB_ADDSTRING, 0, (LPARAM)wErrLine);
+            }
 
-                // Convertir el contenido a wchar_t
-                wchar_t* wErrText = (wchar_t*)calloc(errSize + 1, sizeof(wchar_t));
-                if (!wErrText) {
-                    MessageBox(hWnd, L"Error al asignar memoria", L"Error", MB_OK | MB_ICONERROR);
-                    free(errBuffer);
-                    break;
-                }
+            // Cerrar el archivo
+            fclose(errFile);
 
-                ConvertirCharAWcharT(errBuffer, wErrText, errSize + 1);
-
-                // Mostrar los errores en el control RichEdit
-                SetWindowText(hWndResultados, wErrText);
-
-                // Mostrar un mensaje de error al usuario
-                MessageBox(hWnd, L"Se encontraron errores en el analisis.", L"Error", MB_OK | MB_ICONERROR);
-
-                // Liberar memoria
-                free(errBuffer);
-                free(wErrText);
-
-                return 0; // Asegurar que WndProc retorna un valor válido
+            // Si se encontraron errores, mostrar un mensaje
+            int count = SendMessage(hWndErrores, LB_GETCOUNT, 0, 0);
+            if (count > 0) {
+                MessageBox(hWnd, L"Se encontraron errores en el análisis.", L"Error", MB_OK | MB_ICONERROR);
             }
             else {
                 fclose(errFile);
@@ -636,9 +791,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             // Si no hay errores en errores.txt, continuar con la ejecución normal
             fclose(errFile);
-
-
-
         }
         break;
         default:
@@ -646,13 +798,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
     }
     break;
-case WM_PAINT:
-{
-    PAINTSTRUCT ps;
-    HDC hdc = BeginPaint(hWnd, &ps);
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hWnd, &ps);
 
-    EndPaint(hWnd, &ps);
-    return 0;
+        EndPaint(hWnd, &ps);
+        return 0;
     }
     break;
     case WM_DESTROY:

@@ -21,6 +21,7 @@
 #define ID_ARCHIVO_GUARDAR              32772
 #define IDC_STATIC                      -1
 #define ID_RESULTADOS 1001  // Identificador único para el control RichEdit
+#define ID_ERRORES 302
 
 // Next default values for new objects
 // 

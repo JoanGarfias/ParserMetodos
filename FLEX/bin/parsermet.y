@@ -18,13 +18,14 @@
     #define M_E 2.71828182845904523536
 #endif
 
-void parser();
+int parser();
 void yyerror(const char *);
 void yywarning(const char *);
 void asignarValores(double, double, double, double);
-void validar_denominador(double);
+int validar_denominador(double);
+extern int yylineno;
 
-double x = 10.0, x_ant = 0.0;
+double x = 10.0;
 double error_esperado = 0.1;
 int metodo_sel = 0;
 
@@ -45,6 +46,7 @@ double fx = 0.0, fdx = 0.0, gx = 0.0;
 %token LOG10 LOGE EXP RAIZ
 
 %token NT_DEC PF_DEC X_DEC FX_DEC FDX_DEC GX_DEC ERROR_DEC
+%token ERROR_T
 
 %left '+' '-'
 %left '*' '/'
@@ -74,20 +76,41 @@ prog:
         metodo_sel = METODO_NEWTONRAPH;
         asignarValores($2, $4, $6, $8);
     }
-    |
-    PF_DEC NUMERO FX_DEC expr GX_DEC expr ERROR_DEC NUMERO '}'
+    | PF_DEC NUMERO FX_DEC expr GX_DEC expr ERROR_DEC NUMERO '}'
     {
         metodo_sel = METODO_PUNTOFIJO;
         asignarValores($2, $4, $6, $8);
     }
-
-    |
-    X_DEC NUMERO FX_DEC expr '}'
+    | X_DEC NUMERO FX_DEC expr '}'
     {
         metodo_sel = EVALUAR_FUNCION;
         asignarValores($2, $4, 0.0, 0.0);
     }
-
+    | NT_DEC ERROR_T {
+        yyerror("Se esperaba un numero despues de 'nt'");
+        YYABORT;
+    }
+    |
+    NT_DEC NUMERO ERROR_T {
+        yyerror("Se esperaba 'f(x) = ...' despues del numero");
+        YYABORT;
+    }
+    | NT_DEC NUMERO FX_DEC expr ERROR_T {
+        yyerror("Se esperaba 'fd(x) = ...' despues de 'f(x) = ...'");
+        YYABORT;
+    }
+    | NT_DEC NUMERO FX_DEC expr FDX_DEC expr ERROR_DEC ERROR_T {
+        yyerror("Se esperaba un numero positivo para el margen de error");
+        YYABORT;
+    }
+    | NT_DEC NUMERO FX_DEC expr FDX_DEC expr ERROR_DEC NUMERO ERROR_T {
+        yyerror("Se esperaba '}' para cerrar la definicion");
+        YYABORT;
+    }
+    | ERROR_T {
+        yyerror("Se ha producido un error sintáctico inesperado");
+        YYABORT;
+    }
     ;
 
 expr:
@@ -103,8 +126,13 @@ term:
 
     | term '/' factor       {
                                 if(set_x){
-                                    validar_denominador($3);
-                                    $$ = $1 / $3;
+                                    if(!validar_denominador($3)){
+                                        yyerror("No se puede dividir por cero");
+                                        YYABORT;
+                                    }
+                                    else{
+                                        $$ = $1 / $3;
+                                    }
                                 }
                             }
 
@@ -114,7 +142,7 @@ term:
     ;
 
 factor:
-    sig NUMERO                  {   if(set_x) $$ = $1 * $2;          }
+    NUMERO                  {   if(set_x) $$ = $1;          }
 
     | sig X                     {   if(set_x) $$ = $1 * x;           }
     
@@ -131,20 +159,35 @@ factor:
     | sig TAN '(' expr ')'      {   if(set_x) $$ = $1 * tan($4);     }
     
     | sig COSEC '(' expr ')'    {   if(set_x){
-                                        validar_denominador(sin($4));
-                                        $$ = $1 * (1.0 / sin($4));
+                                        if(!validar_denominador(sin($4))){
+                                            yyerror("Cosecante indefinida");
+                                            YYABORT;
+                                        }
+                                        else{
+                                            $$ = $1 * (1.0 / sin($4));
+                                        }
                                     }     
                                 }
     
     | sig SEC '(' expr ')'      {   if(set_x){
-                                        validar_denominador(cos($4));
-                                        $$ = $1 * (1.0 / cos($4));
+                                        if(!validar_denominador(cos($4))){
+                                            yyerror("Secante no definida");
+                                            YYABORT;
+                                        }
+                                        else{
+                                            $$ = $1 * (1.0 / cos($4));
+                                        }
                                     }     
                                 }
     
     | sig COT '(' expr ')'      {   if(set_x){
-                                        validar_denominador(tan($4));
-                                        $$ = $1 * (1.0 / tan($4));
+                                        if(!validar_denominador(tan($4))){
+                                            yyerror("Cotangente no definida");
+                                            YYABORT;
+                                        }
+                                        else{
+                                            $$ = $1 * (1.0 / tan($4));
+                                        }
                                     }     
                                 }
     
@@ -161,22 +204,31 @@ factor:
     | sig TANH '(' expr ')'     {   if(set_x) $$ = $1 * tanh($4); }
 
     | sig LOGE '(' expr ')'     {   if(set_x){
-                                        if($4 <= 0) yyerror("Error: logaritmo natural de un número negativo o cero");
-                                        else $$ = $1 * log($4);
+                                        if($4 <= 0){
+                                            yywarning("Logaritmo natural de un número negativo o cero");
+                                            $$ = $1 * log($4);
+                                        }
                                     }
                                 }
 
     | sig LOG10 '(' expr ')'    {   if(set_x){
-                                        if($4 <= 0) yyerror("Error: logaritmo base 10 de un número negativo o cero");
-                                        else $$ = $1 * log10($4);
+                                        if($4 <= 0){
+                                            yywarning("Logaritmo base 10 de un número negativo o cero");
+                                            $$ = $1 * log10($4);
+                                        }
                                     }
                                 }
 
     | sig EXP '(' expr ')'      {   if(set_x) $$ = $1 * exp($4);     }
     
     | sig RAIZ '(' expr ')'     {   if(set_x){
-                                        if($4 < 0.0) yyerror("Raiz negativa");
-                                        else $$ = $1 * sqrt($4);
+                                        if($4 < 0.0){
+                                            yyerror("Raiz negativa. Intenta probar otros valores.");
+                                            YYABORT;
+                                        }
+                                        else{
+                                            $$ = $1 * sqrt($4);
+                                        }
                                     }    
                                 }
     ;
@@ -189,10 +241,8 @@ sig:
 
 %%
 
-void validar_denominador(double b){
-    if(fabs(b) < EPSILON)
-        yyerror("Division por cero");
-    return;
+int validar_denominador(double b){
+    return fabs(b) < EPSILON;
 }
 
 void asignarValores(double x_metodo, double valor_f1, double valor_f2, double error_metodo){
@@ -211,10 +261,12 @@ void asignarValores(double x_metodo, double valor_f1, double valor_f2, double er
         fx = valor_f1;
         gx = valor_f2;
     }
-    else{ yyerror("Metodo no reconocido");}
+    else{ 
+        yyerror("Metodo no reconocido");
+    }
 }
 
-void parser() {
+int parser() {
     int i = 0;
     double error = 10.0;
     double x_nuevo;
@@ -223,7 +275,14 @@ void parser() {
     fclose(res);
     yyin = fopen("entrada.txt", "r");
     yyout = fopen("salida.txt", "w");
-    yyparse();
+    if(yyparse() != 0){
+        yyrestart(yyin);
+        yyclearin;
+        yylineno = 1;
+        fclose(yyin);
+        fclose(yyout);
+        return 0;
+    }
     fclose(yyin);
     fclose(yyout);
 
@@ -252,7 +311,14 @@ void parser() {
             i++;
 
             yyin = fopen("entrada.txt", "r");
-            yyparse();
+            if(yyparse() != 0){
+                yyrestart(yyin);
+                yyclearin;
+                yylineno = 1;
+                fclose(yyin);
+                fclose(yyout);
+                return 0;
+            }
             fclose(yyin);
 
             if (metodo_sel == METODO_NEWTONRAPH) {
@@ -281,7 +347,14 @@ void parser() {
         FILE *res = fopen("resultados.txt", "w");
         yyin = fopen("entrada.txt", "r");
         yyout = fopen("salida.txt", "w");
-        yyparse();
+        if(yyparse() != 0){
+            yyrestart(yyin);
+            yyclearin;
+            yylineno = 1;
+            fclose(yyin);
+            fclose(yyout);
+            return 0;
+        }
 
         fprintf(res, "f(%.6f) = %.6f\n", x, fx);
 
@@ -290,15 +363,17 @@ void parser() {
         fclose(res);
     }
 
-    x = 10.0, x_ant = 0.0, linea_actual = 1;
+    x = 10.0;
     metodo_sel = 0, set_x = 0, i = 0;
     fx = 0.0, fdx = 0.0, gx = 0.0, error_esperado = 0.2;
+    yylineno = 1;
+    return 1;
 }
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error (Linea %d): %s\n", linea_actual, s);
+    fprintf(stderr, "Error (Linea %d): %s\n", yylineno, s);
 }
 
 void yywarning(const char *msg) {
-    fprintf(stderr, "Advertencia (Linea %d): %s\n", linea_actual, msg);
+    fprintf(stderr, "Advertencia (Linea %d): %s\n", yylineno, msg);
 }

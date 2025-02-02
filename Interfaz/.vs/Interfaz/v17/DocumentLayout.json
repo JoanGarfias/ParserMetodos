@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Interfaz.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet_yac.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\parsermet_yac.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.y||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Interfaz\\parsermet.y||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\parsermet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermetTok.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\parsermetTok.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,32 +26,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "parsermet_yac.h",
-              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet_yac.h",
-              "RelativeDocumentMoniker": "Interfaz\\parsermet_yac.h",
-              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet_yac.h",
-              "RelativeToolTip": "Interfaz\\parsermet_yac.h",
-              "ViewState": "AgIAABwIAAAAAAAAAAAgwDUIAAAkAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "parsermet.h",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.h",
+              "RelativeDocumentMoniker": "Interfaz\\parsermet.h",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.h",
+              "RelativeToolTip": "Interfaz\\parsermet.h",
+              "ViewState": "AgIAABAAAAAAAAAAAAAhwBkAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-02-01T05:28:23.781Z",
+              "WhenOpened": "2025-02-02T04:42:51.004Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "parsermet.y",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.y",
+              "RelativeDocumentMoniker": "Interfaz\\parsermet.y",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.y",
+              "RelativeToolTip": "Interfaz\\parsermet.y",
+              "ViewState": "AgIAAF0BAAAAAAAAAAAqwHUBAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-02-02T03:27:19.565Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "parsermetTok.h",
-              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermetTok.h",
-              "RelativeDocumentMoniker": "Interfaz\\parsermetTok.h",
-              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermetTok.h",
-              "RelativeToolTip": "Interfaz\\parsermetTok.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "Resource.h",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
+              "RelativeDocumentMoniker": "Interfaz\\Resource.h",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
+              "RelativeToolTip": "Interfaz\\Resource.h",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABcAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-02-01T05:28:23.034Z",
+              "WhenOpened": "2025-02-02T01:46:50.601Z",
               "EditorCaption": ""
             },
             {
@@ -62,22 +75,9 @@
               "RelativeDocumentMoniker": "Interfaz\\Interfaz.cpp",
               "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp",
               "RelativeToolTip": "Interfaz\\Interfaz.cpp",
-              "ViewState": "AgIAAGkCAAAAAAAAAAAqwHkCAABHAAAAAAAAAA==",
+              "ViewState": "AgIAAGUBAAAAAAAAAAAAAHQBAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-01T05:23:55.813Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "parsermet.h",
-              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.h",
-              "RelativeDocumentMoniker": "Interfaz\\parsermet.h",
-              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\parsermet.h",
-              "RelativeToolTip": "Interfaz\\parsermet.h",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAuwBcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-02-01T05:23:27.578Z",
               "EditorCaption": ""
             }
           ]
