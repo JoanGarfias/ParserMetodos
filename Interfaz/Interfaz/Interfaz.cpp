@@ -18,7 +18,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // Texto de la barra de título
 WCHAR szWindowClass[MAX_LOADSTRING];            // nombre de clase de la ventana principal
 
 HWND hWndToolBar;                               //Variable para la barra de herramientas
-const int NUMBUTTONS = 3;                       //Numero de botones en la barra,
+const int NUMBUTTONS = 7;                       //Numero de botones en la barra,
 extern int yyparse();
 extern FILE* yyin;
 extern FILE* yyout;
@@ -173,24 +173,52 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     InitCtrlEx.dwICC = ICC_BAR_CLASSES;
     InitCommonControlsEx(&InitCtrlEx);  //---------------------------------P O S I B L E   E R R O R -----
 
-    TBBUTTON tbrButtons[3];
+    TBBUTTON tbrButtons[7];
 
     tbrButtons[0].iBitmap = 0;
-    tbrButtons[0].idCommand = ID_BTNANALIZAR;
+    tbrButtons[0].idCommand = ID_BTNUEVO;
     tbrButtons[0].fsState = TBSTATE_ENABLED;
     tbrButtons[0].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[0].dwData = 0L;
-    tbrButtons[0].iString = (INT_PTR)L"Analizar";
+    tbrButtons[0].iString = (INT_PTR)L"Nuevo";
 
     tbrButtons[1].iBitmap = 1;
-    tbrButtons[1].idCommand = ID_BTNEJECUTAR;
+    tbrButtons[1].idCommand = ID_BTABRIR;
     tbrButtons[1].fsState = TBSTATE_ENABLED;
     tbrButtons[1].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[1].dwData = 0L;
-    tbrButtons[1].iString = (INT_PTR)L"Ejecutar";
+    tbrButtons[1].iString = (INT_PTR)L"Abrir";
 
     tbrButtons[2].iBitmap = 2;
-    tbrButtons[2].idCommand = IDM_EXIT;
+    tbrButtons[2].idCommand = ID_BTGUARDAR;
+    tbrButtons[2].fsState = TBSTATE_ENABLED;
+    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[2].dwData = 0L;
+    tbrButtons[2].iString = (INT_PTR)L"Guardar";
+
+    tbrButtons[2].iBitmap = 3;
+    tbrButtons[2].idCommand = ID_BTCOMPILAR;
+    tbrButtons[2].fsState = TBSTATE_ENABLED;
+    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[2].dwData = 0L;
+    tbrButtons[2].iString = (INT_PTR)L"Compilar";
+
+    tbrButtons[2].iBitmap = 4;
+    tbrButtons[2].idCommand = ID_BTEJECUTAR;
+    tbrButtons[2].fsState = TBSTATE_ENABLED;
+    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[2].dwData = 0L;
+    tbrButtons[2].iString = (INT_PTR)L"Ejecutar";
+
+    tbrButtons[2].iBitmap = 5;
+    tbrButtons[2].idCommand = ID_BTACERCADE;
+    tbrButtons[2].fsState = TBSTATE_ENABLED;
+    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[2].dwData = 0L;
+    tbrButtons[2].iString = (INT_PTR)L"A cerca de";
+
+    tbrButtons[2].iBitmap = 6;
+    tbrButtons[2].idCommand = ID_BTSALIR;
     tbrButtons[2].fsState = TBSTATE_ENABLED;
     tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[2].dwData = 0L;
