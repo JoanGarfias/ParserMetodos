@@ -25,7 +25,6 @@ extern FILE* yyout;
 int analisis_lexico_exitoso = 0;
 
 //Esta función determina el tamaño del archivo
-//Debería estar después de las variables globales
 long PopFileLength(FILE* file)
 {
     int iCurrentPos, iFileLength;
@@ -45,60 +44,6 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-
-void EscribirTexto(HDC hDC, int x, int y, int tf1, const wchar_t texto[128], COLORREF color)
-{
-    HFONT fuente1, fanterior;
-    LOGFONT lf1 = { tf1, 0, 0, 900, 300, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_ROMAN, L"Arial" };
-    COLORREF coloriginal;
-
-    fuente1 = CreateFontIndirect(&lf1);
-    SetBkMode(hDC, TRANSPARENT);
-
-    fanterior = (HFONT)SelectObject(hDC, fuente1);
-    coloriginal = SetTextColor(hDC, color);
-
-    int lineHeight = tf1 + 5;
-    const wchar_t* ptr = texto;
-    int x_aux = x;
-    int y_aux = y;
-
-    wchar_t line[128];
-    int linePos = 0;
-
-    while (*ptr != L'\0') {
-
-        if (*ptr == L'\n' || (*ptr == L'\r' && *(ptr + 1) == L'\n')) {
-
-            if (linePos > 0) {
-                line[linePos] = L'\0';
-                TextOut(hDC, x_aux, y_aux, line, linePos);
-                y_aux += lineHeight;
-                linePos = 0;  // Reseteamos la posición 
-            }
-            x_aux = x;  // Restauramos la posición X original
-            if (*ptr == L'\r') {
-                ptr++;
-            }
-        }
-        else {
-            // Acumulamos los caracteres de la línea
-            line[linePos++] = *ptr;
-        }
-
-        ptr++;
-    }
-
-    if (linePos > 0) {
-        line[linePos] = L'\0';
-        TextOut(hDC, x_aux, y_aux, line, linePos);
-    }
-
-    SelectObject(hDC, fanterior);
-    SetTextColor(hDC, coloriginal);
-    DeleteObject(fuente1);
-}
-
 int extraerLineaDeError(const wchar_t* mensaje)
 {
     int linea = -1;
@@ -106,6 +51,12 @@ int extraerLineaDeError(const wchar_t* mensaje)
     return linea;
 }
 
+int extraerLineaDeAdvertencia(const wchar_t* mensaje)
+{
+    int linea = -1;
+    swscanf(mensaje, L"Advertencia (Linea %d):", &linea);
+    return linea;
+}
 
 
 void navegarALineaEnEdit(HWND hWndEdit, int linea)
@@ -117,8 +68,6 @@ void navegarALineaEnEdit(HWND hWndEdit, int linea)
         SetFocus(hWndEdit);
     }
 }
-
-
 
 void ConvertirCharAWcharT(const char* cadena, wchar_t* resultado, int tamanoResultado) {
     int longitud = MultiByteToWideChar(CP_UTF8, 0, cadena, -1, resultado, tamanoResultado);
@@ -280,6 +229,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     HFONT hFont;
     HFONT hFontR; //Para resultado
     HFONT hFontER; //Para errores
+    HFONT hFontStatus;
 
     TCHAR* ptchBuffer = NULL;
     static FILE* entrada;
@@ -318,16 +268,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             NULL                    // Parámetros adicionales
         );
 
+        //Area de errores
         hWndErrores = CreateWindow(L"listbox", NULL, WS_CHILDWINDOW | WS_VISIBLE
             | WS_VSCROLL | WS_HSCROLL | LBS_STANDARD,
             0, 0, 0, 0,
             hWnd, (HMENU)ID_ERRORES, hInst, NULL);
 
-        // Habilitar CS_DBLCLKS en la clase del control RichEdit
-        /*LONG_PTR style = GetClassLongPtr(hWndResultados, GCL_STYLE);
-        SetClassLongPtr(hWndResultados, GCL_STYLE, style | CS_DBLCLKS);*/
-
-        //barra de estado
+        //Barra de estado
         hStatus = CreateWindowEx(0, STATUSCLASSNAME, NULL, WS_CHILD | WS_VISIBLE | SBARS_SIZEGRIP, 0, 0, 0, 0, hWnd, (HMENU)IDB_STATUS, hInst, NULL);
         dwEVM = SendMessage(hWndEdit, EM_GETEVENTMASK, 0, 0);
         dwEVM |= ENM_UPDATE | ENM_CHANGE | ENM_SELCHANGE;
@@ -342,12 +289,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, L"Segoe UI");
         SendMessage(hWndResultados, WM_SETFONT, (WPARAM)hFont, 0);
 
-        hFontER = CreateFont(24, 0, 0, 0, 0, FALSE, FALSE, FALSE,
+        //Fuente para los errores
+        hFontER = CreateFont(20, 0, 0, 0, 0, FALSE, FALSE, FALSE,
             DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
             CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
             DEFAULT_PITCH, L"Courier New");
 
         SendMessage(hWndErrores, WM_SETFONT, (WPARAM)hFontER, 0);
+
+        //Fuente para el status de la linea actual
+        hFontStatus = CreateFont(22, 0, 0, 0, 0, FALSE, FALSE, FALSE,
+            DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+            CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+            DEFAULT_PITCH, L"Segoe UI");
+
+        SendMessage(hStatus, WM_SETFONT, (WPARAM)hFontStatus, 0);
 
         SetFocus(hWndEdit); //Le da el foco al area de edicion
     }
@@ -370,29 +326,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         // Redimensionar el área de resultados
         MoveWindow(hWndResultados, mitad - (mitad/4), 70, mitad + (mitad/4), height, TRUE);
-        MoveWindow(hWndErrores, 0, height / 2 + 50, mitad - (mitad/4), height / 2, TRUE);
+        MoveWindow(hWndErrores, 0, height / 2 + 20, mitad - (mitad/4), height / 2, TRUE);
 
         // Redimensionar la barra de estado
         SendMessage(hStatus, WM_SIZE, 0, 0);
 
-        CHARFORMAT charFormat = { 0 };  // Inicializamos la estructura a cero
-        charFormat.cbSize = sizeof(CHARFORMAT);  // Especificamos el tamaño de la estructura
-        charFormat.dwMask = CFM_COLOR;  // Usamos la máscara para indicar que queremos establecer el color
-        charFormat.crTextColor = RGB(40, 40, 40);  // Establecer el color de texto (gris oscuro)
+        CHARFORMAT charFormat = { 0 }; 
+        charFormat.cbSize = sizeof(CHARFORMAT);
+        charFormat.dwMask = CFM_COLOR; 
+        charFormat.crTextColor = RGB(40, 40, 40);
 
-        // Establecer colores para la ventana de edición (hWndEdit)
-        SendMessage(hWndEdit, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(240, 240, 240));  // Fondo gris claro
-        SendMessage(hWndEdit, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&charFormat);  // Configurar el color de texto (oscuro)
+        // Colores para la ventana de edición (hWndEdit)
+        SendMessage(hWndEdit, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(240, 240, 240));
+        SendMessage(hWndEdit, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&charFormat); 
 
-        // Establecer colores para el área de resultados (hWndResultados)
+        // Colores para la ventana de edición (hWndEdit)
+        SendMessage(hWndResultados, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(240, 240, 240));
+        SendMessage(hWndResultados, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&charFormat);
+
+        /*
+        // Colores para el área de resultados (hWndResultados)
         SendMessage(hWndResultados, WM_CTLCOLORSTATIC, (WPARAM)GetDC(hWndResultados), (LPARAM)hWndResultados);
-        SetTextColor(GetDC(hWndResultados), RGB(40, 40, 40));  // Texto gris oscuro
-        SetBkColor(GetDC(hWndResultados), RGB(255, 255, 255));  // Fondo blanco
+        SetTextColor(GetDC(hWndResultados), RGB(40, 40, 40));
+        SetBkColor(GetDC(hWndResultados), RGB(255, 255, 255));
+        */
+        charFormat = { 0 };
+        charFormat.cbSize = sizeof(CHARFORMAT);
+        charFormat.dwMask = CFM_COLOR;
+        charFormat.crTextColor = RGB(255, 69, 0);
 
-        // Establecer colores para el área de errores (hWndErrores)
+        // Colores para la ventana de edición (hWndEdit)
+        SendMessage(hWndErrores, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(240, 240, 240));
+        SendMessage(hWndErrores, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)&charFormat);
+
+        /*
+        // Colores para el área de errores (hWndErrores)
         SendMessage(hWndErrores, WM_CTLCOLORSTATIC, (WPARAM)GetDC(hWndErrores), (LPARAM)hWndErrores);
         SetTextColor(GetDC(hWndErrores), RGB(255, 69, 0));  // Texto en naranja para destacar errores
         SetBkColor(GetDC(hWndErrores), RGB(240, 240, 240));  // Fondo gris claro
+        */
 
         // Configurar los colores del control de la barra de estado
         SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)L"Listo");
@@ -490,25 +462,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
                     if (errorLine != -1)
                     {
-                        // Mover el cursor a la línea
                         navegarALineaEnEdit(hWndEdit, errorLine);
 
-                        // Resaltar toda la línea
-                        DWORD dwStart = SendMessage(hWndEdit, EM_LINEINDEX, errorLine - 1, 0); // Obtener el índice de inicio de la línea
-                        DWORD dwEnd = SendMessage(hWndEdit, EM_LINEINDEX, errorLine, 0); // Obtener el índice de fin de la línea
+                        DWORD dwStart = SendMessage(hWndEdit, EM_LINEINDEX, errorLine - 1, 0);
+                        DWORD dwEnd = SendMessage(hWndEdit, EM_LINEINDEX, errorLine, 0);
 
                         // Seleccionar la línea
                         SendMessage(hWndEdit, EM_SETSEL, dwStart, dwEnd);
 
-                        // Establecer el color de fondo o de texto para resaltar (opcional)
                         // Cambiar el color de fondo de la selección
                         CHARRANGE charRange;
                         charRange.cpMin = dwStart;
                         charRange.cpMax = dwEnd;
                         SendMessage(hWndEdit, EM_EXSETSEL, 0, (LPARAM)&charRange);
+                    }
+                    else{
+                        errorLine = extraerLineaDeAdvertencia(szItemLista);
+                        if (errorLine != -1) {
+                            navegarALineaEnEdit(hWndEdit, errorLine);
 
-                        // Usar el COLORREF para modificar el color, por ejemplo:
-                        // Cambiar color de fondo a amarillo (RGB
+                            DWORD dwStart = SendMessage(hWndEdit, EM_LINEINDEX, errorLine - 1, 0);
+                            DWORD dwEnd = SendMessage(hWndEdit, EM_LINEINDEX, errorLine, 0);
+
+                            // Seleccionar la línea
+                            SendMessage(hWndEdit, EM_SETSEL, dwStart, dwEnd);
+
+                            // Cambiar el color de fondo de la selección
+                            CHARRANGE charRange;
+                            charRange.cpMin = dwStart;
+                            charRange.cpMax = dwEnd;
+                            SendMessage(hWndEdit, EM_EXSETSEL, 0, (LPARAM)&charRange);
+                        }
                     }
                 }
             }
