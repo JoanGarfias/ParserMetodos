@@ -1,6 +1,4 @@
-nt{
-x = 1
-f(x) = exp(x) - 3*x
-fd(x) = exp(x) - 3
-error = 0.0001
+{x
+x = 0.
+f(x)= 1 /
 }

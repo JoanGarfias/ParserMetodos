@@ -527,13 +527,13 @@ static const yytype_int8 yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    74,    74,    79,    84,    89,    94,    98,   102,   106,
-     110,   117,   119,   121,   125,   127,   139,   141,   145,   147,
-     149,   151,   153,   155,   157,   159,   161,   172,   183,   194,
-     196,   198,   200,   202,   204,   206,   214,   222,   224,   237,
-     238,   239
+       0,   115,   115,   120,   125,   130,   135,   139,   143,   147,
+     151,   158,   160,   162,   166,   168,   177,   179,   183,   185,
+     187,   189,   191,   193,   195,   197,   199,   210,   221,   232,
+     234,   236,   238,   240,   242,   244,   252,   260,   262,   275,
+     276,   277
 };
 #endif
 
@@ -1509,7 +1509,7 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 75 "parsermet.y"
+#line 116 "parsermet.y"
     {
         metodo_sel = METODO_NEWTONRAPH;
         asignarValores((yyvsp[(2) - (9)].val), (yyvsp[(4) - (9)].val), (yyvsp[(6) - (9)].val), (yyvsp[(8) - (9)].val));
@@ -1519,7 +1519,7 @@ yyreduce:
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 80 "parsermet.y"
+#line 121 "parsermet.y"
     {
         metodo_sel = METODO_PUNTOFIJO;
         asignarValores((yyvsp[(2) - (9)].val), (yyvsp[(4) - (9)].val), (yyvsp[(6) - (9)].val), (yyvsp[(8) - (9)].val));
@@ -1529,7 +1529,7 @@ yyreduce:
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 85 "parsermet.y"
+#line 126 "parsermet.y"
     {
         metodo_sel = EVALUAR_FUNCION;
         asignarValores((yyvsp[(2) - (5)].val), (yyvsp[(4) - (5)].val), 0.0, 0.0);
@@ -1539,7 +1539,7 @@ yyreduce:
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 89 "parsermet.y"
+#line 130 "parsermet.y"
     {
         yyerror("Se esperaba un numero despues de 'nt'");
         YYABORT;
@@ -1549,7 +1549,7 @@ yyreduce:
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 94 "parsermet.y"
+#line 135 "parsermet.y"
     {
         yyerror("Se esperaba 'f(x) = ...' despues del numero");
         YYABORT;
@@ -1559,7 +1559,7 @@ yyreduce:
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 98 "parsermet.y"
+#line 139 "parsermet.y"
     {
         yyerror("Se esperaba 'fd(x) = ...' despues de 'f(x) = ...'");
         YYABORT;
@@ -1569,7 +1569,7 @@ yyreduce:
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 102 "parsermet.y"
+#line 143 "parsermet.y"
     {
         yyerror("Se esperaba un numero positivo para el margen de error");
         YYABORT;
@@ -1579,7 +1579,7 @@ yyreduce:
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 106 "parsermet.y"
+#line 147 "parsermet.y"
     {
         yyerror("Se esperaba '}' para cerrar la definicion");
         YYABORT;
@@ -1589,7 +1589,7 @@ yyreduce:
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 110 "parsermet.y"
+#line 151 "parsermet.y"
     {
         yyerror("Se ha producido un error sintáctico inesperado");
         YYABORT;
@@ -1599,44 +1599,41 @@ yyreduce:
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 117 "parsermet.y"
+#line 158 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (3)].val) + (yyvsp[(3) - (3)].val);     }
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 119 "parsermet.y"
+#line 160 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (3)].val) - (yyvsp[(3) - (3)].val);     }
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 121 "parsermet.y"
+#line 162 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (1)].val);  }
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 125 "parsermet.y"
+#line 166 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (3)].val) * (yyvsp[(3) - (3)].val);     }
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 127 "parsermet.y"
+#line 168 "parsermet.y"
     {
                                 if(set_x){
                                     if(!validar_denominador((yyvsp[(3) - (3)].val))){
-                                        yyerror("No se puede dividir por cero");
-                                        YYABORT;
+                                        yywarning("Division cercana a cero");
                                     }
-                                    else{
-                                        (yyval.val) = (yyvsp[(1) - (3)].val) / (yyvsp[(3) - (3)].val);
-                                    }
+                                    (yyval.val) = (yyvsp[(1) - (3)].val) / (yyvsp[(3) - (3)].val);
                                 }
                             }
     break;
@@ -1644,77 +1641,77 @@ yyreduce:
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 139 "parsermet.y"
+#line 177 "parsermet.y"
     {   if(set_x) (yyval.val) = pow((yyvsp[(1) - (3)].val), (yyvsp[(3) - (3)].val)); }
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 141 "parsermet.y"
+#line 179 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (1)].val);          }
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 145 "parsermet.y"
+#line 183 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (1)].val);          }
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 147 "parsermet.y"
+#line 185 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * x;           }
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 149 "parsermet.y"
+#line 187 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * M_E;         }
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 151 "parsermet.y"
+#line 189 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (2)].val) * M_PI;        }
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 153 "parsermet.y"
+#line 191 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (4)].val) * (yyvsp[(3) - (4)].val);          }
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 155 "parsermet.y"
+#line 193 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * sin((yyvsp[(4) - (5)].val));     }
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 157 "parsermet.y"
+#line 195 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * cos((yyvsp[(4) - (5)].val));     }
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 159 "parsermet.y"
+#line 197 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * tan((yyvsp[(4) - (5)].val));     }
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 161 "parsermet.y"
+#line 199 "parsermet.y"
     {   if(set_x){
                                         if(!validar_denominador(sin((yyvsp[(4) - (5)].val)))){
                                             yyerror("Cosecante indefinida");
@@ -1730,7 +1727,7 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 172 "parsermet.y"
+#line 210 "parsermet.y"
     {   if(set_x){
                                         if(!validar_denominador(cos((yyvsp[(4) - (5)].val)))){
                                             yyerror("Secante no definida");
@@ -1746,7 +1743,7 @@ yyreduce:
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 183 "parsermet.y"
+#line 221 "parsermet.y"
     {   if(set_x){
                                         if(!validar_denominador(tan((yyvsp[(4) - (5)].val)))){
                                             yyerror("Cotangente no definida");
@@ -1762,49 +1759,49 @@ yyreduce:
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 194 "parsermet.y"
+#line 232 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * asin((yyvsp[(4) - (5)].val));    }
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 196 "parsermet.y"
+#line 234 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * acos((yyvsp[(4) - (5)].val));    }
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 198 "parsermet.y"
+#line 236 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * atan((yyvsp[(4) - (5)].val));    }
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 200 "parsermet.y"
+#line 238 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * sinh((yyvsp[(4) - (5)].val)); }
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 202 "parsermet.y"
+#line 240 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * cosh((yyvsp[(4) - (5)].val)); }
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 204 "parsermet.y"
+#line 242 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * tanh((yyvsp[(4) - (5)].val)); }
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 206 "parsermet.y"
+#line 244 "parsermet.y"
     {   if(set_x){
                                         if((yyvsp[(4) - (5)].val) <= 0){
                                             yywarning("Logaritmo natural de un número negativo o cero");
@@ -1817,7 +1814,7 @@ yyreduce:
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 214 "parsermet.y"
+#line 252 "parsermet.y"
     {   if(set_x){
                                         if((yyvsp[(4) - (5)].val) <= 0){
                                             yywarning("Logaritmo base 10 de un número negativo o cero");
@@ -1830,14 +1827,14 @@ yyreduce:
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 222 "parsermet.y"
+#line 260 "parsermet.y"
     {   if(set_x) (yyval.val) = (yyvsp[(1) - (5)].val) * exp((yyvsp[(4) - (5)].val));     }
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 224 "parsermet.y"
+#line 262 "parsermet.y"
     {   if(set_x){
                                         if((yyvsp[(4) - (5)].val) < 0.0){
                                             yyerror("Raiz negativa. Intenta probar otros valores.");
@@ -1853,28 +1850,28 @@ yyreduce:
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 237 "parsermet.y"
+#line 275 "parsermet.y"
     { (yyval.val) = 1.0;     }
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 238 "parsermet.y"
+#line 276 "parsermet.y"
     { (yyval.val) = -1.0;    }
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 239 "parsermet.y"
+#line 277 "parsermet.y"
     { (yyval.val) = 1.0;     }
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1878 "parsermet_yac.h"
+#line 1875 "parsermet_yac.h"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2086,7 +2083,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 242 "parsermet.y"
+#line 280 "parsermet.y"
 
 
 int validar_denominador(double b){
@@ -2223,5 +2220,7 @@ void yyerror(const char *s) {
 }
 
 void yywarning(const char *msg) {
-    fprintf(stderr, "Advertencia (Linea %d): %s\n", yylineno, msg);
+    FILE *wn = fopen("advertencias.txt","a+");
+    fprintf(wn, "Advertencia (Linea %d): %s\n", yylineno, msg);
+    fclose(wn);
 }

@@ -696,6 +696,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 perror("Error al limpiar errores.txt");
             }
 
+            // Limpiar advertencias
+            limpiar = fopen("advertencias.txt", "w+");
+            if (limpiar) {
+                fclose(limpiar); // Al cerrarlo inmediatamente, el archivo queda vacío
+            }
+            else {
+                perror("Error al limpiar advertencias.txt");
+            }
+
             // Abrir archivos para `yyin` y `yyout`
             yyin = fopen("entrada.txt", "r");
             if (yyin == NULL) {
@@ -718,36 +727,63 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // Cerrar archivos
             fclose(yyin);
             fclose(yyout);
+
+
+
             // Abrir errores.txt en modo lectura
             FILE* errFile = fopen("errores.txt", "r");
-            if (!errFile) {
-                MessageBox(hWnd, L"No se pudo abrir el archivo de errores.", L"Error", MB_OK | MB_ICONERROR);
-                break;
+            int hayErrores = 0;
+            if (errFile) {
+                fseek(errFile, 0, SEEK_END);
+                hayErrores = (ftell(errFile) > 0);  // Si el tamaño del archivo es > 0, hay errores
+            }
+
+            // 📌 Verificar si "advertencias.txt" tiene contenido
+            FILE* warnFile = fopen("advertencias.txt", "r");
+            int hayAdvertencias = 0;
+            if (warnFile) {
+                fseek(warnFile, 0, SEEK_END);
+                hayAdvertencias = (ftell(warnFile) > 0);  // Si hay contenido, hay advertencias
             }
 
             // Buffer para leer línea por línea
-            char errBuffer[256];
+            if (hayErrores) {
+                fseek(errFile, 0, SEEK_SET); 
+                char errBuffer[256];
+                // Leer línea por línea y agregar a la ListBox
+                while (fgets(errBuffer, sizeof(errBuffer), errFile)) {
+                    // Convertir la línea de char* a wchar_t*
+                    wchar_t wErrLine[256];
+                    ConvertirCharAWcharT(errBuffer, wErrLine, sizeof(wErrLine) / sizeof(wErrLine[0]));
 
-            // Leer línea por línea y agregar a la ListBox
-            while (fgets(errBuffer, sizeof(errBuffer), errFile)) {
-                // Convertir la línea de char* a wchar_t*
-                wchar_t wErrLine[256];
-                ConvertirCharAWcharT(errBuffer, wErrLine, sizeof(wErrLine) / sizeof(wErrLine[0]));
+                    // Agregar la línea de error a la ListBox
+                    SendMessage(hWndErrores, LB_ADDSTRING, 0, (LPARAM)wErrLine);
+                }
 
-                // Agregar la línea de error a la ListBox
-                SendMessage(hWndErrores, LB_ADDSTRING, 0, (LPARAM)wErrLine);
             }
-
-            // Cerrar el archivo
             fclose(errFile);
 
-            // Si se encontraron errores, mostrar un mensaje
-            int count = SendMessage(hWndErrores, LB_GETCOUNT, 0, 0);
-            if (count > 0) {
+            if (hayAdvertencias) {
+                fseek(warnFile, 0, SEEK_SET);
+                char wnBuffer[256];
+
+                // Leer línea por línea y agregar a la ListBox
+                while (fgets(wnBuffer, sizeof(wnBuffer), warnFile)) {
+                    // Convertir la línea de char* a wchar_t*
+                    wchar_t wWarnLine[256];
+                    ConvertirCharAWcharT(wnBuffer, wWarnLine, sizeof(wWarnLine) / sizeof(wWarnLine[0]));
+
+                    // Agregar la línea de error a la ListBox
+                    SendMessage(hWndErrores, LB_ADDSTRING, 0, (LPARAM)wWarnLine);
+                }
+
+                // Cerrar el 
+            }
+            fclose(warnFile);
+            if (hayErrores) {
                 MessageBox(hWnd, L"Se encontraron errores en el análisis.", L"Error", MB_OK | MB_ICONERROR);
             }
             else {
-                fclose(errFile);
                 // Abrir el archivo resultados.txt
                 FILE* res = fopen("resultados.txt", "r");
                 if (res == NULL) {
@@ -791,9 +827,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 free(wtext);
                 MessageBox(hWnd, L"El analisis se realizo correctamente, no se encontraron errores.", L"Éxito", MB_OK | MB_ICONINFORMATION);
             }
-
-            // Si no hay errores en errores.txt, continuar con la ejecución normal
-            fclose(errFile);
         }
         break;
         default:
