@@ -168,12 +168,9 @@ term:
     | term '/' factor       {
                                 if(set_x){
                                     if(!validar_denominador($3)){
-                                        yyerror("No se puede dividir por cero");
-                                        YYABORT;
+                                        yywarning("Division cercana a cero");
                                     }
-                                    else{
-                                        $$ = $1 / $3;
-                                    }
+                                    $$ = $1 / $3;
                                 }
                             }
 
@@ -183,7 +180,7 @@ term:
     ;
 
 factor:
-    NUMERO                  {   if(set_x) $$ = $1;          }
+    NUMERO                      {   if(set_x) $$ = $1;          }
 
     | sig X                     {   if(set_x) $$ = $1 * x;           }
     
@@ -416,5 +413,7 @@ void yyerror(const char *s) {
 }
 
 void yywarning(const char *msg) {
-    fprintf(stderr, "Advertencia (Linea %d): %s\n", yylineno, msg);
+    FILE *wn = fopen("advertencias.txt","a+");
+    fprintf(wn, "Advertencia (Linea %d): %s\n", yylineno, msg);
+    fclose(wn);
 }
