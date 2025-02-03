@@ -16,8 +16,8 @@
 
 //Botones de iconos bob esponja
 #define ID_BTNUEVO						201
-#define ID_BTABRIR						202
-#define ID_BTGUARDAR					203
+//#define ID_BTABRIR						202
+//#define ID_BTGUARDAR					203
 #define ID_BTCOMPILAR					204
 #define ID_BTVACIO						205
 #define ID_BTACERCADE					206
