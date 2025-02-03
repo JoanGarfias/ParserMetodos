@@ -13,9 +13,16 @@
 #define IDC_INTERFAZ                  109
 #define IDR_MAINFRAME                   128
 #define ID_EDITRICH                     200
-#define ID_BTNINICIO                    201
-#define ID_BTNCOMPILAR                  202
-#define IDB_STATUS                      206
+
+//Botones de iconos bob esponja
+#define ID_BTNUEVO						201
+#define ID_BTABRIR						202
+#define ID_BTGUARDAR					203
+#define ID_BTCOMPILAR					204
+#define ID_BTACERCADE					205
+#define ID_BTSALIR						206
+
+#define IDB_STATUS                      207
 #define IDB_TOOLBAR                     300
 #define ID_ARCHIVO_ABRIR                32771
 #define ID_ARCHIVO_GUARDAR              32772
