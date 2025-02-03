@@ -7,7 +7,7 @@
 #define IDS_APP_TITLE                   103
 #define IDD_ABOUTBOX                    103
 #define IDM_ABOUT                       104
-//#define IDM_EXIT                        105
+#define IDM_EXIT                        105
 #define IDI_INTERFAZ                  107
 #define IDI_SMALL                       108
 #define IDC_INTERFAZ                  109
@@ -19,10 +19,11 @@
 #define ID_BTABRIR						202
 #define ID_BTGUARDAR					203
 #define ID_BTCOMPILAR					204
-#define ID_BTACERCADE					205
-#define ID_BTSALIR						206
+#define ID_BTVACIO						205
+#define ID_BTACERCADE					206
+//#define IDM_EXIT						207
 
-#define IDB_STATUS                      207
+#define IDB_STATUS                      208
 #define IDB_TOOLBAR                     300
 #define ID_ARCHIVO_ABRIR                32771
 #define ID_ARCHIVO_GUARDAR              32772

@@ -183,14 +183,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[0].iString = (INT_PTR)L"Nuevo";
 
     tbrButtons[1].iBitmap = 1;
-    tbrButtons[1].idCommand = ID_BTABRIR;
+    tbrButtons[1].idCommand = ID_ARCHIVO_ABRIR;
     tbrButtons[1].fsState = TBSTATE_ENABLED;
     tbrButtons[1].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[1].dwData = 0L;
     tbrButtons[1].iString = (INT_PTR)L"Abrir";
 
     tbrButtons[2].iBitmap = 2;
-    tbrButtons[2].idCommand = ID_BTGUARDAR;
+    tbrButtons[2].idCommand = ID_ARCHIVO_GUARDAR;
     tbrButtons[2].fsState = TBSTATE_ENABLED;
     tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[2].dwData = 0L;
@@ -204,11 +204,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[2].iString = (INT_PTR)L"Compilar";
 
     tbrButtons[2].iBitmap = 4;
-    tbrButtons[2].idCommand = ID_BTEJECUTAR;
+    tbrButtons[2].idCommand = ID_BTVACIO;
     tbrButtons[2].fsState = TBSTATE_ENABLED;
     tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[2].dwData = 0L;
-    tbrButtons[2].iString = (INT_PTR)L"Ejecutar";
+    tbrButtons[2].iString = (INT_PTR)L"Vacío";
 
     tbrButtons[2].iBitmap = 5;
     tbrButtons[2].idCommand = ID_BTACERCADE;
@@ -218,7 +218,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[2].iString = (INT_PTR)L"A cerca de";
 
     tbrButtons[2].iBitmap = 6;
-    tbrButtons[2].idCommand = ID_BTSALIR;
+    tbrButtons[2].idCommand = IDM_EXIT;
     tbrButtons[2].fsState = TBSTATE_ENABLED;
     tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[2].dwData = 0L;
