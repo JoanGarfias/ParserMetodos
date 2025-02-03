@@ -197,7 +197,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[2].iString = (INT_PTR)L"Guardar";
 
     tbrButtons[2].iBitmap = 3;
-    tbrButtons[2].idCommand = ID_BTCOMPILAR;
+    tbrButtons[2].idCommand = ID_BTNANALIZAR;
     tbrButtons[2].fsState = TBSTATE_ENABLED;
     tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[2].dwData = 0L;
