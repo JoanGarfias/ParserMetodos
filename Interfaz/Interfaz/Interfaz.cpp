@@ -474,6 +474,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
         }
+        break;
         case ID_AYUDAPF: {
             LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
             LPCWSTR rutaArchivo = L"ayuda_pf.pdf";      // Archivo como argumento

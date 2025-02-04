@@ -1,13 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\",
+  "WorkspaceRootPath": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Interfaz.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.rc||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Interfaz.rc||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,24 +30,37 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Interfaz.rc",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.rc",
+              "RelativeDocumentMoniker": "Interfaz\\Interfaz.rc",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.rc",
+              "RelativeToolTip": "Interfaz\\Interfaz.rc",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAD0AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-02-04T04:52:37.775Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Interfaz.cpp",
-              "DocumentMoniker": "C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp",
               "RelativeDocumentMoniker": "Interfaz\\Interfaz.cpp",
-              "ToolTip": "C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp",
               "RelativeToolTip": "Interfaz\\Interfaz.cpp",
-              "ViewState": "AgIAANEBAAAAAAAAAAAAANwBAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAM4BAAAAAAAAAAAAANwBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-03T03:00:56.299Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Resource.h",
-              "DocumentMoniker": "C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
               "RelativeDocumentMoniker": "Interfaz\\Resource.h",
-              "ToolTip": "C:\\Users\\JEREM\\OneDrive\\Escritorio\\5toSemestre\\Compiladores\\ordinario\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
               "RelativeToolTip": "Interfaz\\Resource.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
