@@ -1,30 +1,30 @@
 ﻿  Interfaz.cpp
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\parsermet.h(695,1): warning C4102: 'find_rule': etiqueta sin referencia
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\parsermet.h(695,1): warning C4102: 'find_rule': etiqueta sin referencia
   (compilando archivo de origen "Interfaz.cpp")
   
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\parsermet.h(1182,3): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\parsermet.h(1182,3): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
   (compilando archivo de origen "Interfaz.cpp")
   
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\parsermet.h(1345,15): warning C4244: 'inicializando': conversión de '__int64' a 'int'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\parsermet.h(1345,15): warning C4244: 'inicializando': conversión de '__int64' a 'int'; posible pérdida de datos
   (compilando archivo de origen "Interfaz.cpp")
   
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\parsermet.h(1509,12): warning C4273: 'isatty': vinculación de DLL incoherente
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\parsermet.h(1509,12): warning C4273: 'isatty': vinculación de DLL incoherente
   (compilando archivo de origen "Interfaz.cpp")
       C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\ucrt\corecrt_io.h(493,30):
       vea la definición anterior de “isatty”
   
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\parsermet_yac.h(1212,5): warning C4065: la instrucción switch contiene etiquetas 'default' pero no etiquetas 'case'
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\parsermet_yac.h(1212,5): warning C4065: la instrucción switch contiene etiquetas 'default' pero no etiquetas 'case'
   (compilando archivo de origen "Interfaz.cpp")
   
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(11,9): warning C4005: 'UNICODE': redefinición de macro
-      D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(11,9):
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(11,9): warning C4005: 'UNICODE': redefinición de macro
+      C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(11,9):
       'UNICODE' declarado previamente en la línea de comandos
   
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(64,13): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(307,28): warning C4244: '=': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(501,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(514,39): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(515,37): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(531,43): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-D:\REPOSITORIOS\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(532,41): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-  Interfaz.vcxproj -> D:\REPOSITORIOS\ParserMetodos\Interfaz\x64\Debug\Interfaz.exe
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(64,13): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(307,28): warning C4244: '=': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(501,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(514,39): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(515,37): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(531,43): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(532,41): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+  Interfaz.vcxproj -> C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\x64\Debug\Interfaz.exe

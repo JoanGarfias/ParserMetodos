@@ -208,7 +208,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[4].fsState = TBSTATE_ENABLED;
     tbrButtons[4].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[4].dwData = 0L;
-    tbrButtons[4].iString = (INT_PTR)L"Vacío";
+    tbrButtons[4].iString = (INT_PTR)L"Vacio";
 
     tbrButtons[5].iBitmap = 5;
     tbrButtons[5].idCommand = ID_BTACERCADE;
@@ -476,7 +476,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         case ID_AYUDAPF: {
             LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
-            LPCWSTR rutaArchivo = L"ayuda_newton.pdf";      // Archivo como argumento
+            LPCWSTR rutaArchivo = L"ayuda_pf.pdf";      // Archivo como argumento
 
             ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
         }
