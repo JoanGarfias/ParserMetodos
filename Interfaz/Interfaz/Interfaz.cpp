@@ -684,6 +684,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             InvalidateRect(hWnd, &rect, TRUE);
         }
             break;
+        case ID_BTNUEVO: {
+            SendMessage(hWndEdit, WM_SETTEXT, 0, (LPARAM)L"");
+        }
+        break;
         case ID_BTNANALIZAR: {
             FILE* file = fopen("entrada.txt", "w");
 

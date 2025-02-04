@@ -1,1 +1,2 @@
-Error (Linea 1): syntax error
+Error (Linea 2): Sintaxis no valida en el token 'p'
+Error (Linea 2): Se esperaba 'f(x) = ...' despues del numero
