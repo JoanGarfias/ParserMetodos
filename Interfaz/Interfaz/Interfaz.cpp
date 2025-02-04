@@ -196,33 +196,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[2].dwData = 0L;
     tbrButtons[2].iString = (INT_PTR)L"Guardar";
 
-    tbrButtons[2].iBitmap = 3;
-    tbrButtons[2].idCommand = ID_BTNANALIZAR;
-    tbrButtons[2].fsState = TBSTATE_ENABLED;
-    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
-    tbrButtons[2].dwData = 0L;
-    tbrButtons[2].iString = (INT_PTR)L"Compilar";
+    tbrButtons[3].iBitmap = 3;
+    tbrButtons[3].idCommand = ID_BTNANALIZAR;
+    tbrButtons[3].fsState = TBSTATE_ENABLED;
+    tbrButtons[3].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[3].dwData = 0L;
+    tbrButtons[3].iString = (INT_PTR)L"Compilar";
 
-    tbrButtons[2].iBitmap = 4;
-    tbrButtons[2].idCommand = ID_BTVACIO;
-    tbrButtons[2].fsState = TBSTATE_ENABLED;
-    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
-    tbrButtons[2].dwData = 0L;
-    tbrButtons[2].iString = (INT_PTR)L"Vacío";
+    tbrButtons[4].iBitmap = 4;
+    tbrButtons[4].idCommand = ID_BTVACIO;
+    tbrButtons[4].fsState = TBSTATE_ENABLED;
+    tbrButtons[4].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[4].dwData = 0L;
+    tbrButtons[4].iString = (INT_PTR)L"Vacío";
 
-    tbrButtons[2].iBitmap = 5;
-    tbrButtons[2].idCommand = ID_BTACERCADE;
-    tbrButtons[2].fsState = TBSTATE_ENABLED;
-    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
-    tbrButtons[2].dwData = 0L;
-    tbrButtons[2].iString = (INT_PTR)L"A cerca de";
+    tbrButtons[5].iBitmap = 5;
+    tbrButtons[5].idCommand = ID_BTACERCADE;
+    tbrButtons[5].fsState = TBSTATE_ENABLED;
+    tbrButtons[5].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[5].dwData = 0L;
+    tbrButtons[5].iString = (INT_PTR)L"A cerca de";
 
-    tbrButtons[2].iBitmap = 6;
-    tbrButtons[2].idCommand = IDM_EXIT;
-    tbrButtons[2].fsState = TBSTATE_ENABLED;
-    tbrButtons[2].fsStyle = TBSTYLE_BUTTON;
-    tbrButtons[2].dwData = 0L;
-    tbrButtons[2].iString = (INT_PTR)L"Salir";
+    tbrButtons[6].iBitmap = 6;
+    tbrButtons[6].idCommand = IDM_EXIT;
+    tbrButtons[6].fsState = TBSTATE_ENABLED;
+    tbrButtons[6].fsStyle = TBSTYLE_BUTTON;
+    tbrButtons[6].dwData = 0L;
+    tbrButtons[6].iString = (INT_PTR)L"Salir";
 
     hWndToolBar = CreateToolbarEx(hWnd, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | CCS_TOP | CCS_NODIVIDER | TBSTYLE_FLAT, IDB_TOOLBAR, NUMBUTTONS, hInstance, IDB_TOOLBAR, tbrButtons, NUMBUTTONS, 0, 0, 0, 0, sizeof(TBBUTTON));
     //Se establece el tamanio de los iconos para cada boton:
