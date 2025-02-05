@@ -7,6 +7,14 @@
       "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Interfaz.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}",
+      "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Interfaz.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.rc||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Interfaz.rc||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2860C4D4-AA2E-40E7-8FB6-937647BC1D88}|Interfaz\\Interfaz.vcxproj|solutionrelative:Interfaz\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
@@ -18,11 +26,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Interfaz.ico - Icon [256x256, 32 bits, PNG]",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.ico",
+              "RelativeDocumentMoniker": "Interfaz\\Interfaz.ico",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.ico - Icon [256x256, 32 bits, PNG]",
+              "RelativeToolTip": "Interfaz\\Interfaz.ico - Icon [256x256, 32 bits, PNG]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001525|",
+              "WhenOpened": "2025-02-05T03:08:13.615Z",
+              "EditorCaption": " - Icon [256x256, 32 bits, PNG]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Interfaz.rc",
+              "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.rc",
+              "RelativeDocumentMoniker": "Interfaz\\Interfaz.rc",
+              "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.rc",
+              "RelativeToolTip": "Interfaz\\Interfaz.rc",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACAAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-02-04T04:52:37.775Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -32,22 +65,23 @@
               "RelativeDocumentMoniker": "Interfaz\\Interfaz.cpp",
               "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Interfaz.cpp",
               "RelativeToolTip": "Interfaz\\Interfaz.cpp",
-              "ViewState": "AgIAANEBAAAAAAAAAAAAANwBAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAH4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-02-03T03:00:56.299Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Resource.h",
               "DocumentMoniker": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
               "RelativeDocumentMoniker": "Interfaz\\Resource.h",
               "ToolTip": "D:\\REPOSITORIOS\\ParserMetodos\\Interfaz\\Interfaz\\Resource.h",
               "RelativeToolTip": "Interfaz\\Resource.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-02-02T18:57:12.032Z"
+              "WhenOpened": "2025-02-02T18:57:12.032Z",
+              "EditorCaption": ""
             }
           ]
         }
