@@ -18,7 +18,7 @@ WCHAR szTitle[MAX_LOADSTRING];                  // Texto de la barra de título
 WCHAR szWindowClass[MAX_LOADSTRING];            // nombre de clase de la ventana principal
 
 HWND hWndToolBar;                               //Variable para la barra de herramientas
-const int NUMBUTTONS = 7;                       //Numero de botones en la barra,
+const int NUMBUTTONS = 6;                       //Numero de botones en la barra,
 extern int yyparse();
 extern FILE* yyin;
 extern FILE* yyout;

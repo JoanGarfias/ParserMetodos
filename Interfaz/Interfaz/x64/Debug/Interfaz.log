@@ -21,10 +21,10 @@ C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMeto
       'UNICODE' declarado previamente en la línea de comandos
   
 C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(64,13): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
-C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(307,28): warning C4244: '=': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(502,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
-C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(515,39): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(516,37): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(532,43): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
-C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(533,41): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(300,28): warning C4244: '=': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(495,23): warning C4244: 'inicializando': conversión de 'LRESULT' a 'int'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(508,39): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(509,37): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(525,43): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
+C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\Interfaz\Interfaz.cpp(526,41): warning C4244: 'inicializando': conversión de 'LRESULT' a 'DWORD'; posible pérdida de datos
   Interfaz.vcxproj -> C:\Users\JEREM\OneDrive\Escritorio\5toSemestre\Compiladores\ordinario\ParserMetodos\Interfaz\x64\Debug\Interfaz.exe
