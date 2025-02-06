@@ -44,6 +44,39 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+void ObtenerDirectorioActual(WCHAR* path) {
+    // Obtener la ruta completa del ejecutable
+    GetModuleFileName(NULL, path, MAX_PATH);
+
+    // Recorrer la cadena de atrás hacia adelante para encontrar la última '\'
+    for (int i = lstrlen(path) - 1; i >= 0; i--) {
+        if (path[i] == L'\\') {
+            path[i] = L'\0';  // Terminar la cadena en la última '\'
+            break;
+        }
+    }
+}
+
+void AbrirPDF(LPCWSTR nombrePDF) {
+    WCHAR path[MAX_PATH];
+    ObtenerDirectorioActual(path);
+
+    // Construir la ruta completa de mupdf.exe
+    WCHAR rutaEjecutable[MAX_PATH];
+    wsprintf(rutaEjecutable, L"%s\\mupdf.exe", path);
+
+    // Construir la ruta completa del archivo PDF
+    WCHAR rutaArchivo[MAX_PATH];
+    wsprintf(rutaArchivo, L"%s\\%s", path, nombrePDF);
+
+    // Ejecutar MuPDF con el archivo PDF
+    int result = (int)ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
+    if (result <= 32) {
+        MessageBox(NULL, L"Error al abrir el archivo", L"Error", MB_OK);
+    }
+}
+
+
 int extraerLineaDeError(const wchar_t* mensaje)
 {
     int linea = -1;
@@ -461,27 +494,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // Analizar las selecciones de menú:
         switch (wmId)
         {
-        case ID_AYUDANT: {
-            LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
-            LPCWSTR rutaArchivo = L"ayuda_newton.pdf";      // Archivo como argumento
+        case ID_AYUDANT:
+            AbrirPDF(L"ayuda_newton.pdf");
+            break;
 
-            ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
-        }
-        break;
-        case ID_AYUDAPF: {
-            LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
-            LPCWSTR rutaArchivo = L"ayuda_pf.pdf";      // Archivo como argumento
+        case ID_AYUDAPF:
+            AbrirPDF(L"ayuda_pf.pdf");
+            break;
 
-            ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
-        }
-        break;
-        case ID_AYUDAFUNC: {
-            LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
-            LPCWSTR rutaArchivo = L"ayuda_funcion.pdf";      // Archivo como argumento
+        case ID_AYUDAFUNC:
+            AbrirPDF(L"ayuda_funcion.pdf");
+            break;
 
-            ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
-        }
-        break;
         case IDM_ABOUT:
             DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
         break;
