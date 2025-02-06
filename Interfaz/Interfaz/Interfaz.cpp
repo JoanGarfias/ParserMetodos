@@ -173,7 +173,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     InitCtrlEx.dwICC = ICC_BAR_CLASSES;
     InitCommonControlsEx(&InitCtrlEx);  //---------------------------------P O S I B L E   E R R O R -----
 
-    TBBUTTON tbrButtons[7];
+    TBBUTTON tbrButtons[6];
 
     tbrButtons[0].iBitmap = 0;
     tbrButtons[0].idCommand = ID_BTNUEVO;
@@ -204,25 +204,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[3].iString = (INT_PTR)L"Compilar";
 
     tbrButtons[4].iBitmap = 4;
-    tbrButtons[4].idCommand = ID_BTVACIO;
+    tbrButtons[4].idCommand = IDM_ABOUT;
     tbrButtons[4].fsState = TBSTATE_ENABLED;
     tbrButtons[4].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[4].dwData = 0L;
-    tbrButtons[4].iString = (INT_PTR)L"Vacio";
+    tbrButtons[4].iString = (INT_PTR)L"A cerca de";
 
     tbrButtons[5].iBitmap = 5;
-    tbrButtons[5].idCommand = IDM_ABOUT;
+    tbrButtons[5].idCommand = IDM_EXIT;
     tbrButtons[5].fsState = TBSTATE_ENABLED;
     tbrButtons[5].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[5].dwData = 0L;
-    tbrButtons[5].iString = (INT_PTR)L"A cerca de";
-
-    tbrButtons[6].iBitmap = 6;
-    tbrButtons[6].idCommand = IDM_EXIT;
-    tbrButtons[6].fsState = TBSTATE_ENABLED;
-    tbrButtons[6].fsStyle = TBSTYLE_BUTTON;
-    tbrButtons[6].dwData = 0L;
-    tbrButtons[6].iString = (INT_PTR)L"Salir";
+    tbrButtons[5].iString = (INT_PTR)L"Salir";
 
     hWndToolBar = CreateToolbarEx(hWnd, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | CCS_TOP | CCS_NODIVIDER | TBSTYLE_FLAT, IDB_TOOLBAR, NUMBUTTONS, hInstance, IDB_TOOLBAR, tbrButtons, NUMBUTTONS, 0, 0, 0, 0, sizeof(TBBUTTON));
     //Se establece el tamanio de los iconos para cada boton:
@@ -484,7 +477,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
         case ID_AYUDAFUNC: {
             LPCWSTR rutaEjecutable = L"mupdf.exe";  // Ruta del .exe
-            LPCWSTR rutaArchivo = L"ayuda_newton.pdf";      // Archivo como argumento
+            LPCWSTR rutaArchivo = L"ayuda_funcion.pdf";      // Archivo como argumento
 
             ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
         }
