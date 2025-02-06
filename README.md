@@ -26,10 +26,10 @@ El código está dividido en varias secciones principales:
 - `asignarValores`: Esta función asigna los valores iniciales para `x`, `fx`, `fdx`, `gx`, y `error_esperado` dependiendo del método seleccionado.
 - `yyerror` y `yywarning`: Estas funciones manejan los errores y advertencias durante el análisis sintáctico.
 
-### 4. **Función Principal (`main`)**
+### 4. **Función Principal (`parser()`)**
 - La función principal lee la entrada desde `entrada.txt`, realiza el análisis sintáctico, y luego ejecuta el método numérico seleccionado (Newton-Raphson o Punto Fijo) para encontrar la raíz de la ecuación.
 - El proceso se repite hasta que el error sea menor que el error esperado.
-- Los resultados de cada iteración se imprimen en la consola.
+- Los resultados de cada iteración se imprimen en el archivo `resultados.txt`.
 
 ---
 
