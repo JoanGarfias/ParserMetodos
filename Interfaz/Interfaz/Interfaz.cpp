@@ -705,6 +705,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_BTNUEVO: {
             SendMessage(hWndEdit, WM_SETTEXT, 0, (LPARAM)L"");
+            SendMessage(hWndResultados, WM_SETTEXT, 0, (LPARAM)L"");
+            SendMessage(hWndErrores, LB_RESETCONTENT, 0, 0);
         }
         break;
         case ID_BTNANALIZAR: {
