@@ -1,5 +1,8 @@
 # README
 
+### PARSER DE MÉTODOS NUMÉRICOS REALIZADO EN FLEX Y BISON
+![dodecaedro](https://github.com/user-attachments/assets/c05890de-a246-4cca-9e3b-f0ee75e695b4)
+
 ## Descripción del Proyecto
 
 Este proyecto implementa un analizador sintáctico y léxico utilizando **Bison** y **Flex** para resolver ecuaciones no lineales mediante dos métodos numéricos: **Método de Newton-Raphson** y **Método de Punto Fijo**. El código está diseñado para leer una entrada desde un archivo de texto (`entrada.txt`), procesarla, y luego escribir los resultados en otro archivo de texto (`salida.txt`).
@@ -23,10 +26,10 @@ El código está dividido en varias secciones principales:
 - `asignarValores`: Esta función asigna los valores iniciales para `x`, `fx`, `fdx`, `gx`, y `error_esperado` dependiendo del método seleccionado.
 - `yyerror` y `yywarning`: Estas funciones manejan los errores y advertencias durante el análisis sintáctico.
 
-### 4. **Función Principal (`main`)**
+### 4. **Función Principal (`parser()`)**
 - La función principal lee la entrada desde `entrada.txt`, realiza el análisis sintáctico, y luego ejecuta el método numérico seleccionado (Newton-Raphson o Punto Fijo) para encontrar la raíz de la ecuación.
 - El proceso se repite hasta que el error sea menor que el error esperado.
-- Los resultados de cada iteración se imprimen en la consola.
+- Los resultados de cada iteración se imprimen en el archivo `resultados.txt`.
 
 ---
 
@@ -34,8 +37,9 @@ El código está dividido en varias secciones principales:
 
 ### Método de Newton-Raphson
 El método de Newton-Raphson es un algoritmo iterativo para encontrar la raíz de una función. Se basa en la siguiente fórmula:
-
-> \[ x_{nuevo} = x - \frac{f(x)}{f'(x)} \]
+```math
+x_{nuevo} = x - \frac{f(x)}{f'(x)}
+```
 
 Donde:
 - _x_ es el valor actual.
@@ -44,9 +48,9 @@ Donde:
 
 ### Método de Punto Fijo
 El método de Punto Fijo es otro algoritmo iterativo que encuentra la raíz de una función transformando la ecuación original _f(x) = 0_ en una ecuación de la forma _x = g(x)_. La iteración se realiza mediante:
-
-> \[ x_{nuevo} = g(x) \]
-
+```math
+x_{nuevo} = g(x)
+```
 Donde:
 - _x_ es el valor actual.
 - _g(x)_ es la función de iteración.
@@ -59,44 +63,57 @@ Donde:
 Para compilar el código, asegúrate de tener instalados **Bison** y **Flex**. Luego, ejecuta los siguientes comandos en la terminal:
 
 ```bash
-bison -d newtonrap.y
-flex newtonrap.l
-gcc newtonrap.tab.c lex.yy.c -lm -o newtonrap
+flex.exe –oparsermet.h parsermet.l
+bison.exe -y -v --defines=parsermetTok.h -oparsermet_yac.h parsermet.y
+```
+
+Estos comandos generarán 3 archivos de cabecera. Si quieres generar un .h y un .c para poder realizar pruebas en consola necesitas ejecutar:
+
+```bash
+flex.exe –oparsermet.h parsermet.l
+bison.exe -d –oparsermet_yac.c parsermet.y
 ```
 
 ### 2. **Archivo de Entrada**
 Crea un archivo llamado `entrada.txt` en el mismo directorio que el ejecutable. El archivo debe contener la definición de la ecuación y los parámetros iniciales. Por ejemplo:
 
 ```
-NT_DEC 10 FX_DEC x^2 - 2 FDX_DEC 2*x ERROR_DEC 0.01 }
+nt{
+x = -2.0
+f(x) = x^2 - 2
+fd(x) = 2*x
+error = 0.01
+}
 ```
 
-Esto indica que se utilizará el método de Newton-Raphson con un valor inicial de _x = 10_, la función _f(x) = x² - 2_, su derivada _f'(x) = 2x_, y un error esperado de 0.01.
+Esto indica que se utilizará el método de Newton-Raphson con un valor inicial de _x = -2.0_, la función:
+```math
+f(x) = x^2 - 2
+```
+, su derivada:
+
+```math
+f'(x) = 2*x
+```
+
+y un error esperado de 0.01.
 
 ### 3. **Ejecución**
-Ejecuta el programa compilado:
-
-```bash
-./newtonrap
-```
-
-Los resultados se imprimirán en la consola y también se escribirán en el archivo `salida.txt`.
+Ejecuta el programa compilado si aplica.
+Los resultados se imprimirán en un archivo llamado `resultados.txt`.
 
 ---
 
 ## Ejemplo de Salida
 
 ```
-Iteracion 1:
-  x = 5.100000
-  Error = 4.900000
-  f(x) = 24.010000
-  f'(x) = 10.200000
-Iteracion 2:
-  x = 2.746078
-  Error = 2.353922
-  f(x) = 5.540947
-  f'(x) = 5.492157
+Iteración X            f(X)         g(X)         Error       
+---------- ------------ ------------ ------------ ------------
+1          0.400000     2.000000     0.400000     0.400000    
+2          0.469404     0.347022     0.469404     0.069404    
+3          0.498600     0.145980     0.498600     0.029196    
+4          0.512893     0.071462     0.512893     0.014292    
+5          0.520361     0.037343     0.520361     0.007469    
 ...
 ```
 
@@ -104,7 +121,7 @@ Iteracion 2:
 
 ## Consideraciones
 
-1. **División por Cero**: El código maneja la división por cero lanzando un error.
+1. **División por Cero**: El código maneja la división por cero lanzando una advertencia.
 2. **Precisión**: El algoritmo se detiene cuando el error es menor que el error esperado.
 3. **Reinicio**: Después de cada ejecución, las variables globales se reinician a sus valores iniciales.
 
@@ -123,3 +140,7 @@ Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para má
 ---
 
 ¡Gracias por revisar este proyecto! Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue en el repositorio.
+
+## Creditos
+- Joan Pablo Alvarado Garfias
+- Jeremy Osorio Ramos
