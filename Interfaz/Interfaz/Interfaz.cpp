@@ -211,7 +211,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     tbrButtons[4].iString = (INT_PTR)L"Vacio";
 
     tbrButtons[5].iBitmap = 5;
-    tbrButtons[5].idCommand = ID_BTACERCADE;
+    tbrButtons[5].idCommand = IDM_ABOUT;
     tbrButtons[5].fsState = TBSTATE_ENABLED;
     tbrButtons[5].fsStyle = TBSTYLE_BUTTON;
     tbrButtons[5].dwData = 0L;
