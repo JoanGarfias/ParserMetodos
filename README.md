@@ -1,5 +1,8 @@
 # README
 
+### PARSER DE MÉTODOS NUMÉRICOS REALIZADO EN FLEX Y BISON
+![dodecaedro](https://github.com/user-attachments/assets/c05890de-a246-4cca-9e3b-f0ee75e695b4)
+
 ## Descripción del Proyecto
 
 Este proyecto implementa un analizador sintáctico y léxico utilizando **Bison** y **Flex** para resolver ecuaciones no lineales mediante dos métodos numéricos: **Método de Newton-Raphson** y **Método de Punto Fijo**. El código está diseñado para leer una entrada desde un archivo de texto (`entrada.txt`), procesarla, y luego escribir los resultados en otro archivo de texto (`salida.txt`).
