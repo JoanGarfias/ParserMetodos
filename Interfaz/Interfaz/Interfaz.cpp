@@ -346,8 +346,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         MoveWindow(hWndEdit, 0, 70, mitad - (mitad/4), height / 2 - 50, TRUE);
 
         // Redimensionar el área de resultados
-        MoveWindow(hWndResultados, mitad - (mitad/4), 70, mitad + (mitad/4), height, TRUE);
-        MoveWindow(hWndErrores, 0, height / 2 + 20, mitad - (mitad/4), height / 2, TRUE);
+        MoveWindow(hWndResultados, mitad - (mitad/4), 70, mitad + (mitad/4), height-120, TRUE);
+        MoveWindow(hWndErrores, 0, height / 2 + 20, mitad - (mitad/4), height / 2 - 70, TRUE);
 
         // Redimensionar la barra de estado
         SendMessage(hStatus, WM_SIZE, 0, 0);
@@ -481,6 +481,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             ShellExecute(NULL, L"open", rutaEjecutable, rutaArchivo, NULL, SW_SHOW);
         }
+        break;
         case IDM_ABOUT:
             DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
         break;
@@ -807,7 +808,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
             fclose(warnFile);
             if (hayErrores) {
-                MessageBox(hWnd, L"Se encontraron errores en el análisis.", L"Error", MB_OK | MB_ICONERROR);
+                MessageBox(hWnd, L"Se encontraron errores en el analisis.", L"Error", MB_OK | MB_ICONERROR);
             }
             else {
                 // Abrir el archivo resultados.txt
