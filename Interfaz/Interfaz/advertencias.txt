@@ -1,0 +1,5 @@
+Advertencia (Linea 9): Division cercana a cero
+Advertencia (Linea 14): Division cercana a cero
+Advertencia (Linea 19): Division cercana a cero
+Advertencia (Linea 24): Division cercana a cero
+Advertencia (Linea 29): Division cercana a cero
