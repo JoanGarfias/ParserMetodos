@@ -69,6 +69,9 @@ bison.exe -y -v --defines=parsermetTok.h -oparsermet_yac.h parsermet.y
 
 Estos comandos generarán 3 archivos de cabecera. Si quieres generar un .h y un .c para poder realizar pruebas en consola necesitas ejecutar:
 
+> Puedes descargar Flex [aquí](https://gothub.dev.projectsegfau.lt/westes/flex)
+> Puedes descargar Bison [aquí](https://www.gnu.org/software/bison/)
+
 ```bash
 flex.exe –oparsermet.h parsermet.l
 bison.exe -d –oparsermet_yac.c parsermet.y
